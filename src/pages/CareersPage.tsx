@@ -68,16 +68,16 @@ export default function CareersPage() {
             key={index} 
             initial={{ opacity: 0, x: -50 }} 
             animate={{ opacity: 1, x: 0 }} 
-            transition={{ duration: 0.8, delay: index * 0.1 }} 
+            transition={{ duration: 0.08, delay: index * 0.07 }} 
             whileHover={{
               scale: 1.01,
-              boxShadow: '0 4px 15px rgba(255, 255, 255, 0.15)', // Softer shadow
-              backgroundColor: 'rgba(255, 255, 255, 0.1)', // Subtle background shift
-              borderColor: 'rgba(255, 255, 255, 0.2)' // Slightly refined border
+              boxShadow: '0 4px 15px ', // Softer shadow
+              backgroundColor: 'transparent', // Subtle background shift
+              borderColor: 'rgba(255, 255, 255, 0.2)', 
             }}
-            className="group relative bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 transition-all duration-300"
+            className="group relative bg-transparent  rounded-xl p-8 border hover:shadow-xl hover:bg-transparent border-white/10 transition-all duration-200 "
           >
-          
+        
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div>
                   <h3 className="text-2xl font-semibold mb-4">{position.title}</h3>
@@ -140,5 +140,4 @@ export default function CareersPage() {
         )}
       </div>
     </div>
-  );
-}
+  );}

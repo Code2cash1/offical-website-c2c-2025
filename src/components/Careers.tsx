@@ -69,8 +69,13 @@ const CareersComponent = () => {
               initial={{ opacity: 0, x: -50 }} 
               animate={{ opacity: 1, x: 0 }} 
               transition={{ duration: 0.8, delay: index * 0.1 }} 
-              whileHover={{ scale: 1.02, boxShadow: '0 0 25px rgba(255,255,255,0.5)' }}
-              className="group relative bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 shadow-xl hover:bg-transparent cursor-pointer"
+              whileHover={{
+                scale: 1.01,
+                boxShadow: '0 4px 15px ', // Softer shadow
+                backgroundColor: 'transparent', // Subtle background shift
+                borderColor: 'rgba(255, 255, 255, 0.2)', 
+              }}
+              className="group relative   rounded-xl p-8 border border-white/10 shadow-xl hover:bg-transparent cursor-pointer"
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div>
