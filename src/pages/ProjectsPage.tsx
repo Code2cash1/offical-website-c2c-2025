@@ -44,16 +44,16 @@ export default function ProjectsPage() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
           {projects.map((project, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="group relative h-[400px] overflow-hidden rounded-2xl"
+              className="group relative h-[400px] overflow-hidden rounded-2xl hover:shadow-xl hover:shadow-white/50"
             >
-              <div className="absolute inset-0">
+              <div className="absolute inset- ">
                 <img
                   src={project.image}
                   alt={project.title}
@@ -63,12 +63,12 @@ export default function ProjectsPage() {
               </div>
 
               <div className="absolute inset-0 p-8 flex flex-col justify-end transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/10">
+                <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:shadow-xl hover:shadow-white/50">
                   <span className="text-sm font-medium text-purple-400">{project.category}</span>
                   <h3 className="text-2xl font-bold text-white mt-2 mb-4">{project.title}</h3>
                   <p className="text-gray-300">{project.description}</p>
                   <button className="mt-6 px-6 py-2 bg-white/10 backdrop-blur-lg rounded-full text-white font-medium
-                                   hover:bg-purple-500 transition-colors duration-300">
+                                   hover:bg-purple-700 transition-colors duration-300 ">
                     View Project
                   </button>
                 </div>

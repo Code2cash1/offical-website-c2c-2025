@@ -32,7 +32,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <div id="hero" className="min-h-screen bg-gray-900 relative overflow-hidden" ref={containerRef}>
+    <div id="hero" className="min-h-screen bg-gray-900 relative overflow-hidden " ref={containerRef}>
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,0,255,0.1),rgba(0,0,0,0))]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,0,255,0.1),rgba(0,0,0,0))]" />
@@ -53,19 +53,19 @@ export default function Hero() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl">
-              Transform your digital dreams into reality with our innovative solutions
+              Where technology meets excellence.
             </p>
 
             <div className="flex gap-6 flex-wrap justify-center">
               <button className="group px-8 py-4 bg-purple-500 text-white rounded-full font-semibold 
                                hover:bg-purple-600 transform hover:-translate-y-1 transition-all duration-300
-                               shadow-lg hover:shadow-purple-500/25 flex items-center gap-2">
+                               shadow-lg hover:shadow-xl hover:shadow-white/50 flex items-center gap-2">
                 Get Started
                 <ArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
               </button>
               <button className="px-8 py-4 bg-gray-800 text-white rounded-full font-semibold 
                                hover:bg-gray-750 transform hover:-translate-y-1 transition-all duration-300
-                               border border-purple-500/30">
+                               border border-purple-500/30 hover:shadow-xl hover:shadow-white/50">
                 View Projects
               </button>
             </div>
@@ -73,14 +73,14 @@ export default function Hero() {
 
           <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {[
-              { title: 'Feature 1', description: 'Unleash the power of our cutting-edge solutions.' },
-              { title: 'Feature 2', description: 'Revolutionize your digital landscape.' },
-              { title: 'Feature 3', description: 'Embrace the future of digital transformation.' },
+              { title: 'Unleash the Power', description: 'Discover our cutting-edge solutions that will revolutionize your digital landscape.' },
+              { title: 'Revolutionize Your Digital Landscape', description: 'Embrace the future of digital transformation with our innovative offerings.' },
+              { title: 'Embrace the Future', description: 'Unlock the full potential of your digital dreams with our transformative solutions.' },
             ].map((feature, index) => (
               <div
                 key={index}
                 className="p-8 bg-gray-800/50 backdrop-blur-sm rounded-2xl transform transition-all duration-500
-                         hover:shadow-2xl hover:shadow-purple-500/10 border border-purple-500/10"
+                         hover:shadow-2xl hover:shadow-xl hover:shadow-white/50 border border-purple-500/10 animate-float"
               >
                 <h3 className="text-xl font-semibold text-white mb-4">{feature.title}</h3>
                 <p className="text-gray-400">{feature.description}</p>

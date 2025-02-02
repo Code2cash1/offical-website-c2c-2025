@@ -51,7 +51,7 @@ export default function CareersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-24 text-white">
+    <div className="min-h-screen bg-black pt-32 pb-24 text-white ">
       <div className="container mx-auto px-4">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }} 
@@ -62,16 +62,22 @@ export default function CareersPage() {
           Join Our Team
         </motion.h2>
 
-        <div className="grid gap-6 max-w-4xl mx-auto">
+        <div className="grid gap-6 max-w-4xl mx-auto  " >
           {positions.map((position, index) => (
             <motion.div 
-              key={index} 
-              initial={{ opacity: 0, x: -50 }} 
-              animate={{ opacity: 1, x: 0 }} 
-              transition={{ duration: 0.8, delay: index * 0.1 }} 
-              whileHover={{ scale: 1.02 }}
-              className="group relative bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 shadow-xl hover:bg-white/10 cursor-pointer"
-            >
+            key={index} 
+            initial={{ opacity: 0, x: -50 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 0.8, delay: index * 0.1 }} 
+            whileHover={{
+              scale: 1.01,
+              boxShadow: '0 4px 15px rgba(255, 255, 255, 0.15)', // Softer shadow
+              backgroundColor: 'rgba(255, 255, 255, 0.1)', // Subtle background shift
+              borderColor: 'rgba(255, 255, 255, 0.2)' // Slightly refined border
+            }}
+            className="group relative bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 transition-all duration-300"
+          >
+          
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div>
                   <h3 className="text-2xl font-semibold mb-4">{position.title}</h3>

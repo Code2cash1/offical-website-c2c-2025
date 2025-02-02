@@ -27,9 +27,9 @@ export default function BookMeeting() {
   };
 
   return (
-    <div className="py-24 relative">
+    <div id='contact' className="py-24 relative">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto bg-slate-950 rounded-2xl p-8 shadow-2xl hover:shadow-[0_0_25px_rgba(255,255,255,0.5)] transition-shadow duration-300">
+        <div className="max-w-3xl mx-auto bg-slate-950 rounded-2xl p-8 shadow-2xl hover:shadow-xl hover:shadow-white/50 duration-300">
           <h2 className="text-4xl font-bold text-white text-center mb-8">Book a Meeting</h2>
           
           {isBooked ? (

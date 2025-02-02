@@ -15,16 +15,16 @@ export default function Technologies() {
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-white text-center mb-16">Technologies We Work With</h2>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 ">
           {technologies.map((tech, index) => (
             <div 
               key={index}
-              className="flex flex-col items-center group"
+              className="flex flex-col items-center group hover:shadow-xl hover:shadow-white/50"
             >
               <img 
                 src={tech.icon} 
                 alt={tech.name}
-                className="w-20 h-20 mb-4 transform group-hover:scale-110 transition-transform duration-300"
+                className="w-24 h-24 mb-4 transform group-hover:scale-110 transition-transform duration-300 "
               />
               <span className="text-gray-300 group-hover:text-blue-500 transition-colors duration-300">
                 {tech.name}

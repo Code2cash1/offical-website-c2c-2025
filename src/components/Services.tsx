@@ -36,7 +36,7 @@ const services = [
 
 export default function Services() {
   return (
-    <div className="py-24">
+    <div id='services' className="py-24">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-white text-center mb-16">Our Services</h2>
         

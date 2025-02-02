@@ -51,7 +51,7 @@ const CareersComponent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-24 text-white">
+    <div id="careers" className="min-h-screen bg-black pt-32 pb-24 text-white">
       <div className="container mx-auto px-4">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }} 
@@ -69,8 +69,8 @@ const CareersComponent = () => {
               initial={{ opacity: 0, x: -50 }} 
               animate={{ opacity: 1, x: 0 }} 
               transition={{ duration: 0.8, delay: index * 0.1 }} 
-              whileHover={{ scale: 1.02 }}
-              className="group relative bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 shadow-xl hover:bg-white/10 cursor-pointer"
+              whileHover={{ scale: 1.02, boxShadow: '0 0 25px rgba(255,255,255,0.5)' }}
+              className="group relative bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 shadow-xl hover:bg-transparent cursor-pointer"
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div>
@@ -103,7 +103,7 @@ const CareersComponent = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="bg-transparent hover:shadow-[0_0_25px_rgba(255,255,255,0.5)] transition-shadow duration-300 rounded-xl p-8 shadow-lg"
+            className="bg-transparent hover:shadow-xl hover:shadow-white/50 transition-shadow duration-300 rounded-xl p-8 shadow-lg"
           >
             <motion.h3
               initial={{ opacity: 0, y: -20 }}

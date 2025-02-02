@@ -18,16 +18,16 @@ export default function Navigation() {
   const location = useLocation();
 
   return (
-    <nav className="fixed w-full z-[60] bg-black/50 backdrop-blur-lg border-b border-white/10">
+    <nav className="fixed w-full z-[61] bg-black/50 backdrop-blur-lg border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-2 group cursor-pointer z-[61]">
+          <Link to="/" className="flex items-center space-x-2 group cursor-pointer z-[62]">
             <Code2 className="w-10 h-10 text-white group-hover:text-purple-500 transition-colors duration-300" />
             <span className="text-2xl font-bold text-white cursor-pointer">Code2Cash</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 z-[61]">
+          <div className="hidden md:flex items-center space-x-8 z-[62]">
             {links.map((link) => (
               <Link
                 key={link.path}
@@ -46,7 +46,7 @@ export default function Navigation() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white cursor-pointer z-[61]"
+            className="md:hidden text-white cursor-pointer z-[62]"
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className="w-6 h-6 flex flex-col justify-around">

@@ -78,7 +78,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10"
+              className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border hover:bg-transparent border-white/10 hover:shadow-xl hover:shadow-white/50"
             >
               {messageSent ? (
                 <div className="text-center">
@@ -86,13 +86,13 @@ export default function ContactPage() {
                   <p className="text-gray-400">We will get back to you shortly.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6 h">
                   <div>
                     <input
                       type="text"
                       placeholder="Your Name"
                       required
-                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl hover:shadow-white/50"
                     />
                   </div>
                   <div>
@@ -100,7 +100,7 @@ export default function ContactPage() {
                       type="email"
                       placeholder="Your Email"
                       required
-                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl hover:shadow-white/50"
                     />
                   </div>
                   <div>
@@ -108,12 +108,12 @@ export default function ContactPage() {
                       rows={4}
                       placeholder="Your Message"
                       required
-                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl hover:shadow-white/50"
                     ></textarea>
                   </div>
                   <button
                     type="submit"
-                    className="w-full px-8 py-4 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-600 transition-colors duration-300 flex items-center justify-center gap-2"
+                    className="w-full px-8 py-4 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-600 transition-colors duration-300 flex items-center justify-center gap-2 "
                   >
                     Send Message
                     <Send className="w-4 h-4" />
