@@ -23,7 +23,7 @@ const projects = [
   {
     title: 'Smart Home System',
     description: 'IoT-based home automation system with voice control',
-    image: 'https://images.unsplash.com/photo-1558002038-bb4237b24b4f?auto=format&fit=crop&q=80&w=1000',
+    image: 'https://www.enableds.com/wp-content/uploads/2020/03/PWAs-for-2020.png',
     category: 'IoT'
   }
 ];
