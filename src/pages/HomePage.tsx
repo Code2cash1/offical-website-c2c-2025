@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, } from 'lucide-react';
 import About from '../components/About';
 import Services from '../components/Services';
 import Technologies from '../components/Technologies';
@@ -13,32 +13,33 @@ import Careers from '../components/Careers';
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current || !cardsRef.current) return;
-
-      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - left) / width;
-      const y = (e.clientY - top) / height;
-
-      const cards = cardsRef.current.children;
-      Array.from(cards).forEach((card, index) => {
-        const multiplier = (index + 1) * 2;
-        (card as HTMLElement).style.transform = `
-          translate(
-            ${(x - 0.5) * multiplier * 30}px,
-            ${(y - 0.5) * multiplier * 30}px
-          )
-          rotate(${(x - 0.5) * multiplier * 5}deg)
-        `;
+    const handleScroll = () => {
+      const elements = document.querySelectorAll('.scroll-animate');
+      elements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.8) {
+          element.classList.add('animate-in');
+        }
       });
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    return () => document.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const features = [
+    { image: 'https://th.bing.com/th/id/OIP.RCBY1PGej90jKzEa4_XW_QHaEI?rs=1&pid=ImgDetMain', title: 'Landing Pages', desc: 'Eye-catching landing pages that convert visitors into customers' },
+    { image: 'https://cdn.dribbble.com/users/669353/screenshots/17169995/media/57acb32dbaf5f43c2db1015826e0b363.jpg?compress=1&resize=400x300&vertical=top', title: 'E-Commerce Solutions', desc: 'Full-featured online stores with secure payment integration' },
+    { image: 'https://i.pinimg.com/originals/3d/7f/cb/3d7fcbdce6f622476d0942b97b04ff39.jpg', title: 'Web Applications', desc: 'Custom web apps with powerful functionality' },
+    { image: 'https://cdn.dribbble.com/users/2523680/screenshots/18599696/frame_29_4x.jpg', title: 'Enterprise Solutions', desc: 'Scalable applications for large organizations' },
+    { image: 'https://cdn.dribbble.com/users/5485041/screenshots/13683022/media/68a54d246dc19cf99d6b8f81a4ad7c56.png', title: 'Social Platforms', desc: 'Community and social networking applications' },
+    { image: 'https://cdn.dribbble.com/users/357415/screenshots/6110435/hostox_ui_4x.png?compress=1&resize=400x300', title: 'Business Management', desc: 'Complete business management systems' },
+    { image: 'https://cdn.dribbble.com/userupload/14319660/file/original-ccb5b31ddd9281bc528d258df3013114.png?resize=1000x750&vertical=center', title: 'Real Estate Platforms', desc: 'Property listing and management solutions' },
+    { image: 'https://mir-s3-cdn-cf.behance.net/projects/max_808/fb6c60145780203.Y3JvcCwxNDAwLDEwOTUsMCwxMDM.png', title: 'Marketplace Development', desc: 'Multi-vendor marketplace platforms' },
+    { image: 'https://www.enableds.com/wp-content/uploads/2020/03/PWAs-for-2020.png', title: 'Progressive Web Apps', desc: 'Mobile-first web applications' },
+  ];
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden" ref={containerRef}>
@@ -56,7 +57,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-6xl mx-auto pt-32"
+            className="max-w-6xl mx-auto pt-32 scroll-animate"
           >
             <div className="text-center mb-16">
               <motion.h1
@@ -78,7 +79,7 @@ export default function HomePage() {
               >
                 Transform your digital dreams into reality with cutting-edge solutions
               </motion.p>
-<DotNavigation/>
+              <DotNavigation/>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -100,38 +101,66 @@ export default function HomePage() {
               </motion.div>
             </div>
 
-            <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 * (i + 4) }}
-                  className="group relative p-8 bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative z-10">
-                    <h3 className="text-xl font-semibold text-white mb-4">Feature {i}</h3>
-                    <p className="text-gray-400">
-                      Experience the future of digital transformation with our cutting-edge solutions.
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <motion.div 
+              className="overflow-hidden py-8 w-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              <motion.div 
+                className="flex gap-8"
+                animate={{ x: [0, -2880] }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    duration: 40,
+                    ease: "linear",
+                  },
+                }}
+              >
+                {[...features, ...features].map((feature, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex-shrink-0 w-60 bg-white/5 backdrop-blur-lg rounded-2xl hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-purple-500/50"
+                  >
+                    <img src={feature.image} alt={feature.title} className="w-full h-32 object-cover rounded-t-2xl" />
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
+                      <p className="text-gray-400 text-xs">{feature.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
-        
       </div>
-     <About/>
-     <Services/>
-     <Technologies/>
-    <Team/>
-    <BookMeeting/>
-    <Vision/>
-    <Careers/>
-    <Footer/>
-
+      
+      <div className="scroll-animate">
+        <About/>
+      </div>
+      <div className="scroll-animate">
+        <Services/>
+      </div>
+      <div className="scroll-animate">
+        <Technologies/>
+      </div>
+      <div className="scroll-animate">
+        <Team/>
+      </div>
+      <div className="scroll-animate">
+        <BookMeeting/>
+      </div>
+      <div className="scroll-animate">
+        <Vision/>
+      </div>
+      <div className="scroll-animate">
+        <Careers/>
+      </div>
+      <div className="scroll-animate">
+        <Footer/>
+      </div>
     </div>
   );
 }

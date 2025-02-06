@@ -92,7 +92,7 @@ export default function ContactPage() {
                       type="text"
                       placeholder="Your Name"
                       required
-                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl hover:shadow-white/50"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl "
                     />
                   </div>
                   <div>
@@ -100,7 +100,7 @@ export default function ContactPage() {
                       type="email"
                       placeholder="Your Email"
                       required
-                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl hover:shadow-white/50"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl "
                     />
                   </div>
                   <div>
@@ -108,7 +108,7 @@ export default function ContactPage() {
                       rows={4}
                       placeholder="Your Message"
                       required
-                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl hover:shadow-white/50"
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl "
                     ></textarea>
                   </div>
                   <button
