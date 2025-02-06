@@ -67,10 +67,10 @@ export default function ProjectsPage() {
                   <span className="text-sm font-medium text-purple-400">{project.category}</span>
                   <h3 className="text-2xl font-bold text-white mt-2 mb-4">{project.title}</h3>
                   <p className="text-gray-300">{project.description}</p>
-                  <button className="mt-6 px-6 py-2 bg-white/10 backdrop-blur-lg rounded-full text-white font-medium
+                  {/* <button className="mt-6 px-6 py-2 bg-white/10 backdrop-blur-lg rounded-full text-white font-medium
                                    hover:bg-purple-700 transition-colors duration-300 ">
                     View Project
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </motion.div>

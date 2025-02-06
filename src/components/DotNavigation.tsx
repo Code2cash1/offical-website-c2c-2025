@@ -1,12 +1,10 @@
 import React from 'react';
 
 const sections = [
-  { id: 'hero', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'services', label: 'Services' },
-  { id: 'careers', label: 'Careers' },
   { id: 'team', label: 'Team' },
-  { id: 'contact', label: 'Contact' }
+  { id: 'vision', label: 'vision' }
 ];
 
 export default function DotNavigation() {

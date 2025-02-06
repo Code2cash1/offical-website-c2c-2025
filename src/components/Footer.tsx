@@ -1,5 +1,5 @@
-import React from 'react';
 import { Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -12,21 +12,20 @@ export default function Footer() {
               Transforming ideas into digital reality through innovative technology solutions.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-blue-500 transition-colors"><Linkedin /></a>
-              <a href="#" className="hover:text-blue-500 transition-colors"><Instagram /></a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors"><Linkedin /></a>
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors"><Instagram /></a>
             </div>
           </div>
           
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-blue-500 transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-blue-500 transition-colors">Services</a></li>
-              <li><a href="#" className="hover:text-blue-500 transition-colors">Projects</a></li>
-              <li><a href="#" className="hover:text-blue-500 transition-colors">Team</a></li>
+              <li id='about'><Link to="/about" className="hover:text-blue-500 transition-colors">About Us</Link></li>
+              <li id='services'><Link to="/services" className="hover:text-blue-500 transition-colors">Services</Link></li>
+              <li id='technologies'><Link to="/projects" className="hover:text-blue-500 transition-colors">Technologies</Link></li>
+              <li id='team'><Link to="/team" className="hover:text-blue-500 transition-colors">Team</Link></li>
             </ul>
-          </div>
-          
+          </div>          
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Contact</h4>
             <ul className="space-y-2">

@@ -10,6 +10,9 @@ import TechnologiesPage from './pages/TechnologiesPage';
 import CareersPage from './pages/CareersPage';
 import TeamPage from './pages/TeamPage';
 import ContactPage from './pages/ContactPage';
+import BookMeeting from './pages/meet';
+
+
 
 function App() {
   return (
@@ -17,6 +20,7 @@ function App() {
       <div className="bg-black min-h-screen cursor-none">
         <CustomCursor />
         <Navigation />
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -26,6 +30,7 @@ function App() {
           <Route path="/careers" element={<CareersPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/meet" element={<BookMeeting />} />
         </Routes>
       </div>
     </Router>

@@ -68,7 +68,7 @@ export default function CareersPage() {
             key={index} 
             initial={{ opacity: 0, x: -50 }} 
             animate={{ opacity: 1, x: 0 }} 
-            transition={{ duration: 0.08, delay: index * 0.07 }} 
+            transition={{ duration: 0.8, delay: index * 0.07 }} 
             whileHover={{
               scale: 1.01,
               boxShadow: '0 4px 15px ', // Softer shadow

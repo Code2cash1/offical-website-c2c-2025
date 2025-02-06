@@ -1,33 +1,77 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, } from 'lucide-react';
+import { ArrowRight, Contact, } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import About from '../components/About';
 import Services from '../components/Services';
 import Technologies from '../components/Technologies';
 import Team from '../components/Team';
-import BookMeeting from '../components/BookMeeting';
 import Vision from '../components/Vision';
 import Footer from '../components/Footer';
 import DotNavigation from '../components/DotNavigation';
-import Careers from '../components/Careers';
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const elements = document.querySelectorAll('.scroll-animate');
-      elements.forEach(element => {
-        const rect = element.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.8) {
-          element.classList.add('animate-in');
-        }
-      });
-    };
+  const fadeInUpVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const scaleInVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.9,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const slideInLeftVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const slideInRightVariants = {
+    hidden: { opacity: 0, x: 100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const rotateInVariants = {
+    hidden: { opacity: 0, rotate: -180 },
+    visible: {
+      opacity: 1,
+      rotate: 0,
+      transition: {
+        duration: 1,
+        ease: "easeOut"
+      }
+    }
+  };
 
   const features = [
     { image: 'https://th.bing.com/th/id/OIP.RCBY1PGej90jKzEa4_XW_QHaEI?rs=1&pid=ImgDetMain', title: 'Landing Pages', desc: 'Eye-catching landing pages that convert visitors into customers' },
@@ -44,26 +88,66 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden" ref={containerRef}>
       {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl -top-48 -left-48 animate-blob" />
-        <div className="absolute w-[500px] h-[500px] bg-pink-500/20 rounded-full blur-3xl top-full -translate-y-1/2 left-full -translate-x-1/2 animate-blob animation-delay-2000" />
-        <div className="absolute w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl top-1/2 -translate-y-1/2 -right-48 animate-blob animation-delay-4000" />
-      </div>
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      >
+        <motion.div 
+          className="absolute w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl -top-48 -left-48"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div 
+          className="absolute w-[500px] h-[500px] bg-pink-500/20 rounded-full blur-3xl top-full -translate-y-1/2 left-full -translate-x-1/2"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            rotate: [180, 360, 540],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div 
+          className="absolute w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl top-1/2 -translate-y-1/2 -right-48"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [360, 540, 720],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+      </motion.div>
 
       {/* Content */}
       <div className="relative min-h-screen flex items-center">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-6xl mx-auto pt-32 scroll-animate"
+            variants={fadeInUpVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="max-w-6xl mx-auto pt-32"
           >
             <div className="text-center mb-16">
               <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                variants={scaleInVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 className="text-7xl md:text-9xl font-bold mb-8"
               >
                 <span className="bg-gradient-to-r from-white via-purple-500 to-white bg-clip-text text-transparent">
@@ -72,40 +156,55 @@ export default function HomePage() {
               </motion.h1>
 
               <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                variants={fadeInUpVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 className="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl mx-auto"
               >
                 Transform your digital dreams into reality with cutting-edge solutions
               </motion.p>
               <DotNavigation/>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                variants={fadeInUpVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 className="flex flex-wrap justify-center gap-6"
               >
-                <button className="group relative px-8 py-4 bg-white/10 backdrop-blur-lg rounded-full overflow-hidden">
-                  <span className="relative z-10 flex items-center gap-2 text-white font-semibold">
-                    Get Started
-                    <ArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </button>
+                <Link to="/Meet">
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="group relative px-8 py-4 bg-white/10 backdrop-blur-lg rounded-full overflow-hidden"
+                  >
+                    <span className="relative z-10 flex items-center gap-2 text-white font-semibold">
+                      Get Started
+                      <ArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </motion.button>
+                </Link>
 
-                <button className="group px-8 py-4 bg-white/5 backdrop-blur-lg text-white rounded-full font-semibold
-                                 border border-white/10 hover:border-purple-500/50 transition-all duration-300">
-                  View Projects
-                </button>
+                <Link to="/projects">
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="group px-8 py-4 bg-white/5 backdrop-blur-lg text-white rounded-full font-semibold
+                             border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+                  >
+                    View Projects
+                  </motion.button>
+                </Link>
               </motion.div>
             </div>
 
             <motion.div 
               className="overflow-hidden py-8 w-full"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
+              variants={fadeInUpVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
             >
               <motion.div 
                 className="flex gap-8"
@@ -122,6 +221,7 @@ export default function HomePage() {
                 {[...features, ...features].map((feature, i) => (
                   <motion.div
                     key={i}
+                    whileHover={{ scale: 1.05, y: -5 }}
                     className="flex-shrink-0 w-60 bg-white/5 backdrop-blur-lg rounded-2xl hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-purple-500/50"
                   >
                     <img src={feature.image} alt={feature.title} className="w-full h-32 object-cover rounded-t-2xl" />
@@ -137,30 +237,56 @@ export default function HomePage() {
         </div>
       </div>
       
-      <div className="scroll-animate">
+      <motion.div 
+        variants={scaleInVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{  margin: "-100px" }}
+      >
         <About/>
-      </div>
-      <div className="scroll-animate">
+      </motion.div>
+      <motion.div 
+        variants={scaleInVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{  margin: "-100px" }}
+      >
         <Services/>
-      </div>
-      <div className="scroll-animate">
+      </motion.div>
+      <motion.div 
+        variants={ scaleInVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{  margin: "-100px" }}
+      >
         <Technologies/>
-      </div>
-      <div className="scroll-animate">
+      </motion.div>
+      <motion.div 
+        variants={scaleInVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{  margin: "-100px" }}
+      >
         <Team/>
-      </div>
-      <div className="scroll-animate">
-        <BookMeeting/>
-      </div>
-      <div className="scroll-animate">
+      </motion.div>
+      
+      <motion.div 
+        variants={scaleInVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{  margin: "-100px" }}
+      >
         <Vision/>
-      </div>
-      <div className="scroll-animate">
-        <Careers/>
-      </div>
-      <div className="scroll-animate">
+      </motion.div>
+     
+      <motion.div 
+        variants={fadeInUpVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         <Footer/>
-      </div>
+      </motion.div>
     </div>
   );
 }
