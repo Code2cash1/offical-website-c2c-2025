@@ -58,7 +58,7 @@ export default function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
+        <div className={`md:hidden fixed top-20 left-0 right-0 bg-black/50 backdrop-blur-lg transition-all duration-300 ${isOpen ? 'max-h-[calc(100vh-5rem)] opacity-100' : 'max-h-0 opacity-0'} overflow-y-auto`}>
           <div className="py-4 space-y-4">
             {links.map((link) => (
               <Link
