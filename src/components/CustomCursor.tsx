@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -19,7 +19,7 @@ export default function CustomCursor() {
   return (
     <>
       <div 
-        className="fixed w-4 h-4 rounded-full bg-purple-500 mix-blend-difference pointer-events-none z-50 transition-transform duration-100"
+        className="fixed w-4 h-4 rounded-full bg-purple-500 mix-blend-difference pointer-events-none z-50 transition-transform duration-100 hidden md:block"
         style={{ 
           left: `${position.x}px`, 
           top: `${position.y}px`,
@@ -27,7 +27,7 @@ export default function CustomCursor() {
         }}
       />
       <div 
-        className="fixed w-8 h-8 rounded-full border border-purple-500 mix-blend-difference pointer-events-none z-50 transition-transform duration-300"
+        className="fixed w-8 h-8 rounded-full border border-purple-500 mix-blend-difference pointer-events-none z-50 transition-transform duration-300 hidden md:block"
         style={{ 
           left: `${position.x}px`, 
           top: `${position.y}px`,

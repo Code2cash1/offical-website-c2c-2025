@@ -7,7 +7,7 @@ export default function Hero() {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current || !cardsRef.current) return;
+      if (!containerRef.current || !cardsRef.current || window.innerWidth < 768) return;
 
       const { left, top, width, height } = containerRef.current.getBoundingClientRect();
       const x = (e.clientX - left) / width;
