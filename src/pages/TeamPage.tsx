@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter } from 'lucide-react';
 import bashar from '../assets/bashar.jpg';
 import output from '../assets/output.png';
 import guru from '../assets/guru.png';
@@ -13,82 +12,42 @@ const team = [
   {
     name: 'Syed Imran Hassan',
     role: 'Founder & Managing Director',
-    image: output,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: output
   },
   {
     name: 'Bashar Ali',
     role: 'Founder & Business Development Head',
-    image: bashar,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: bashar
   },
   {
     name: 'Reshav Aanand',
     role: 'Technical Lead & Full Stack Developer',
-    image: reshav,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: reshav
   },
   {
     name: 'Guru prokash',
     role: 'Web Developer',
-    image: guru,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: guru
   },
   {
     name: 'Md Zafir Hasan',
     role: 'Frontend Developer',
-    image: zafir,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: zafir
   },
   {
     name: 'Md  Altamash Malik',
     role: 'web Developer',
-    image: altamash,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: altamash
   },
   {
     name: 'Sajid Ali',
     role: 'Full stack Developer',
-    image: sajid,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: sajid
   }, 
   {
     name: 'Faraz Ahmed',
     role: 'UI/UX Designer',
-    image: output,
-    social: {
-      github: '#',
-      linkedin: '#',
-      twitter: '#'
-    }
+    image: output
   }
 ];
 
@@ -130,18 +89,6 @@ export default function TeamPage() {
                   <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <h3 className="text-lg font-semibold text-white">{member.name}</h3>
                     <p className="text-sm text-gray-300">{member.role}</p>
-                    
-                    <div className="flex space-x-3 mt-3">
-                      <a href={member.social.github} className="text-white hover:text-purple-500 transition-colors">
-                        <Github className="w-5 h-5" />
-                      </a>
-                      <a href={member.social.linkedin} className="text-white hover:text-purple-500 transition-colors">
-                        <Linkedin className="w-5 h-5" />
-                      </a>
-                      <a href={member.social.twitter} className="text-white hover:text-purple-500 transition-colors">
-                        <Twitter className="w-5 h-5" />
-                      </a>
-                    </div>
                   </div>
                 </div>
               </div>
