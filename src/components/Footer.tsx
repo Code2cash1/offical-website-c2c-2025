@@ -33,11 +33,11 @@ export default function Footer() {
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Mail className="w-5 h-5 mr-2" />
-                <a href="mailto:info@code2cash.com" className="hover:text-purple-800 transition-colors">info@code2cash.com</a>
+                <a href="mailto:info@code2cash.com" className="hover:text-purple-800 transition-colors">code2cash1@gmail.com</a>
               </li>
               <li className="flex items-center">
                 <Phone className="w-5 h-5 mr-2" />
-                <a href="tel:+911234567890" className="hover:text-purple-800 transition-colors">+91 1234567890</a>
+                <a href="tel:+911234567890" className="hover:text-purple-800 transition-colors">+91 7061838495</a>
               </li>
               <li className="flex items-center">
                 <MapPin className="w-5 h-5 mr-2" />
