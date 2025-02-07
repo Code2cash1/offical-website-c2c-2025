@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Briefcase, ChevronRight, MapPin, DollarSign, Clock, Upload, CheckCircle } from "lucide-react";
+import {  ChevronRight, MapPin,  Clock, Upload, CheckCircle } from "lucide-react";
 import Modal from "react-modal";
 import { useDropzone } from "react-dropzone";
 
 Modal.setAppElement("#root");
 
 const positions = [
-  { title: "Senior Frontend Developer", type: "Full-time", location: "Remote", salary: "$80k - $120k", experience: "5+ years" },
-  { title: "UI/UX Designer", type: "Full-time", location: "Hybrid", salary: "$70k - $100k", experience: "3+ years" },
-  { title: "DevOps Engineer", type: "Full-time", location: "Remote", salary: "$90k - $130k", experience: "4+ years" },
-  { title: "Project Manager", type: "Full-time", location: "On-site", salary: "$85k - $125k", experience: "6+ years" }
+  { title: "Frontend Developer Intern", type: "Part-time", location: "Remote"},
+  { title: "UI/UX Designer", type: "Part-time", location: "remote"},
+  { title: "Backend Developer", type: "Part-time", location: "Remote"},
+  { title: "Mern-Stack Developer Intern", type: "Full-time", location: "Remote" }
 ];
 
 export default function CareersPage() {
@@ -84,8 +84,8 @@ export default function CareersPage() {
                   <div className="flex flex-wrap gap-4 text-gray-400">
                     <div className="flex items-center gap-2"><Clock className="w-4 h-4" /><span>{position.type}</span></div>
                     <div className="flex items-center gap-2"><MapPin className="w-4 h-4" /><span>{position.location}</span></div>
-                    <div className="flex items-center gap-2"><DollarSign className="w-4 h-4" /><span>{position.salary}</span></div>
-                    <div className="flex items-center gap-2"><Briefcase className="w-4 h-4" /><span>{position.experience}</span></div>
+                    {/* <div className="flex items-center gap-2"><DollarSign className="w-4 h-4" /><span>{position.salary}</span></div>
+                    <div className="flex items-center gap-2"><Briefcase className="w-4 h-4" /><span>{position.experience}</span></div> */}
                   </div>
                 </div>
                 <button 

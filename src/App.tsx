@@ -10,6 +10,7 @@ import CareersPage from './pages/CareersPage';
 import TeamPage from './pages/TeamPage';
 import ContactPage from './pages/ContactPage';
 import BookMeeting from './pages/Meet';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/meet" element={<BookMeeting />} />
 
         </Routes>
+        <Footer/>
       </div>
     </Router>
   );

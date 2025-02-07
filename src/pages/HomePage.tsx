@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Contact, } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import About from '../components/About';
 import Services from '../components/Services';
@@ -32,42 +32,6 @@ export default function HomePage() {
       scale: 1,
       transition: {
         duration: 0.9,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const slideInLeftVariants = {
-    hidden: { opacity: 0, x: -100 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const slideInRightVariants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const rotateInVariants = {
-    hidden: { opacity: 0, rotate: -180 },
-    visible: {
-      opacity: 1,
-      rotate: 0,
-      transition: {
-        duration: 1,
         ease: "easeOut"
       }
     }
@@ -179,7 +143,7 @@ export default function HomePage() {
                     className="group relative px-8 py-4 bg-white/10 backdrop-blur-lg rounded-full overflow-hidden"
                   >
                     <span className="relative z-10 flex items-center gap-2 text-white font-semibold">
-                      Get Started
+                     Connect With Us
                       <ArrowRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -254,7 +218,7 @@ export default function HomePage() {
         <Services/>
       </motion.div>
       <motion.div 
-        variants={ scaleInVariants}
+        variants={scaleInVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{  margin: "-100px" }}
@@ -279,14 +243,14 @@ export default function HomePage() {
         <Vision/>
       </motion.div>
      
-      <motion.div 
+      {/* <motion.div 
         variants={fadeInUpVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
         <Footer/>
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 }
