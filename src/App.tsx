@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CustomCursor from './components/CustomCursor';
 import Navigation from './components/Navigation';
@@ -10,9 +9,7 @@ import TechnologiesPage from './pages/TechnologiesPage';
 import CareersPage from './pages/CareersPage';
 import TeamPage from './pages/TeamPage';
 import ContactPage from './pages/ContactPage';
-import BookMeeting from './pages/meet';
-
-
+import BookMeeting from './pages/Meet';
 
 function App() {
   return (
@@ -31,6 +28,7 @@ function App() {
           <Route path="/team" element={<TeamPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/meet" element={<BookMeeting />} />
+
         </Routes>
       </div>
     </Router>
