@@ -69,15 +69,17 @@ export default function ServicesPage() {
               animate={{ opacity: 1, y: 0, rotateY: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
               whileHover={{ scale: 1.05, rotateY: 10 }}
-              className="group relative perspective-1000"
+              className="group relative perspective-1000 h-[250px]"
             >
-              <div className="relative transform transition-transform duration-500">
-                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10">
-                  <div className="text-purple-500 mb-6 transform group-hover:scale-110 transition-transform duration-300">
+              <div className="relative transform transition-transform duration-500 h-full">
+                <div className="bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 h-full flex flex-col justify-between">
+                  <div className="text-purple-500 transform group-hover:scale-110 transition-transform duration-300">
                     {service.icon}
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-gray-400">{service.description}</p>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">{service.title}</h3>
+                    <p className="text-gray-400 text-sm">{service.description}</p>
+                  </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
