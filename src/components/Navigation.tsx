@@ -23,7 +23,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center space-x-2 group cursor-pointer z-[62]">
             
-                        <img src="src/assets/logo.png" alt="Logo" className="h-64 w-auto brightness-0 invert" />
+                        <img src="https://scontent.fpat1-1.fna.fbcdn.net/v/t1.15752-9/517614765_2256677321443402_2479862450035025561_n.png?stp=dst-png_s480x480&_nc_cat=111&ccb=1-7&_nc_sid=0024fc&_nc_ohc=VFRWf3w57xAQ7kNvwHRa2Q_&_nc_oc=Adm9YUB4IpfZPqf8mSsWkIZQ6YQhXAwsmiGwKGh1XN_UqOAlHFignYsj9yuU81p2IMKPHss_C54LlquhQJZcihtH&_nc_ad=z-m&_nc_cid=2034&_nc_zt=23&_nc_ht=scontent.fpat1-1.fna&oh=03_Q7cD2wF_Uroln1R_-Bxy3PH3GDELjUtE61lI88JIbd334tFnLQ&oe=689DAC63" alt="Logo" className="h-64 w-auto brightness-0 invert" />
                        
             
           </Link>
