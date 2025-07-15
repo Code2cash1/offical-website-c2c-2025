@@ -1,11 +1,7 @@
 import { motion } from 'framer-motion';
 import bashar from '../assets/bashar.jpg';
 import output from '../assets/output.png';
-import guru from '../assets/guru.png';
-import reshav from '../assets/reshav.jpeg';
-import zafir from '../assets/zafir.png';
-import altamash from '../assets/altamash.png';
-import sajid from '../assets/sajid.png';
+
 
 
 const team = [
@@ -19,36 +15,7 @@ const team = [
     role: 'Founder & Business Development Head',
     image: bashar
   },
-  {
-    name: 'Reshav Aanand',
-    role: 'Technical Lead & Full Stack Developer',
-    image: reshav
-  },
-  {
-    name: 'Guru prokash',
-    role: 'Web Developer',
-    image: guru
-  },
-  {
-    name: 'Md Zafir Hasan',
-    role: 'Frontend Developer',
-    image: zafir
-  },
-  {
-    name: 'Md  Altamash Malik',
-    role: 'web Developer',
-    image: altamash
-  },
-  {
-    name: 'Sajid Ali',
-    role: 'Full stack Developer',
-    image: sajid
-  }, 
-  {
-    name: 'Faraz Ahmed',
-    role: 'UI/UX Designer',
-    image: output
-  }
+  
 ];
 
 export default function TeamPage() {
@@ -67,7 +34,7 @@ export default function TeamPage() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
           {team.map((member, index) => (
             <motion.div
               key={index}
@@ -77,8 +44,8 @@ export default function TeamPage() {
               whileHover={{ scale: 1.05, rotateY: 10 }}
               className="group relative perspective-1000"
             >
-              <div className="relative transform transition-transform duration-500">
-                <div className="relative overflow-hidden rounded-xl h-[300px]">
+              <div className="relative transform transition-transform duration-500 ">
+                <div className="relative overflow-hidden rounded-xl h-[300px] w-full">
                   <img
                     src={member.image}
                     alt={member.name}

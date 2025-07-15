@@ -7,8 +7,13 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-2xl font-bold text-white mb-4">Code2Cash</h3>
-            <p className="mb-4">
+            <Link to="/" className="flex items-center space-x-2 group cursor-pointer z-[62]">
+                        
+                                    <img src="src/assets/logo.png" alt="Logo" className="h-60 w-auto brightness-0 invert" />
+                                   
+                        
+                      </Link>
+            <p className="mb-4 -mt-11">
               Transforming ideas into digital reality through innovative technology solutions.
             </p>
             <div className="flex space-x-4">
@@ -33,11 +38,11 @@ export default function Footer() {
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Mail className="w-5 h-5 mr-2" />
-                <a href="mailto:info@code2cash.com" className="hover:text-purple-800 transition-colors">code2cash1@gmail.com</a>
+                <a href="mailto:code2cash1@gmail.com" className="hover:text-purple-800 transition-colors">code2cash1@gmail.com</a>
               </li>
               <li className="flex items-center">
                 <Phone className="w-5 h-5 mr-2" />
-                <a href="tel:+911234567890" className="hover:text-purple-800 transition-colors">+91 7061838495</a>
+                <a href="tel:+917061838495" className="hover:text-purple-800 transition-colors">+91 7061838495</a>
               </li>
               <li className="flex items-center">
                 <MapPin className="w-5 h-5 mr-2" />

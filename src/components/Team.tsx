@@ -1,22 +1,11 @@
 import { motion } from 'framer-motion';
 import bashar from '../assets/bashar.jpg';
 import output from '../assets/output.png';
-import guru from '../assets/guru.png';
-import reshav from '../assets/reshav.jpeg';
-import zafir from '../assets/zafir.png';
-import altamash from '../assets/altamash.png';
-import sajid from '../assets/sajid.png';
-import suraj from '../assets/suraj.png';
 
 const team = [
   { name: 'Syed Imran Hassan', role: 'Founder & Managing Director', image: output },
   { name: 'Bashar Ali', role: 'Founder & Business Development Head', image: bashar },
-  { name: 'Reshav Anand', role: 'Technical Lead & Full Stack Developer', image: reshav },
-  { name: 'Guru Prokash', role: 'Web Developer', image: guru },
-  { name: 'Md Zafir Hasan', role: 'Frontend Developer', image: zafir },
-  { name: 'Md Altamash Malik', role: 'Web Developer', image: altamash },
-  { name: 'Sajid Ali', role: 'Full Stack Developer', image: sajid },
-  { name: 'Surya Kumar Yadav', role: 'Database Engineer', image: suraj },
+ 
 ];
 
 export default function TeamPage() {
@@ -29,7 +18,7 @@ export default function TeamPage() {
         </motion.div>
 
         {/* Grid Layout for larger screens */}
-        <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="hidden md:flex justify-center items-center gap-8">
           {team.map((member, index) => (
             <motion.div
               key={index}
@@ -37,10 +26,10 @@ export default function TeamPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
               whileHover={{ scale: 1.05 }}
-              className="group relative hover:shadow-xl hover:shadow-white/50"
+              className="group relative hover:shadow-xl hover:shadow-white/50 w-[300px]"
             >
               <div className="relative overflow-hidden rounded-xl">
-                <img src={member.image} alt={member.name} className="w-full aspect-square object-cover transform group-hover:scale-110 transition-transform duration-500" />
+                <img src={member.image} alt={member.name} className="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <h3 className="text-lg font-semibold text-white">{member.name}</h3>
@@ -68,7 +57,7 @@ export default function TeamPage() {
                     <img 
                       src={member.image} 
                       alt={member.name} 
-                      className="w-full aspect-square object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-72 object-cover transform group-hover:scale-110 transition-transform duration-500"
                       draggable="false"
                     />
                     <div 

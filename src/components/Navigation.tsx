@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Code2 } from 'lucide-react';
+
 
 const links = [
   { path: '/', label: 'Home' },
@@ -22,8 +22,10 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center space-x-2 group cursor-pointer z-[62]">
-            <Code2 className="w-10 h-10 text-white group-hover:text-purple-500 transition-colors duration-300" />
-            <span className="text-2xl font-bold text-white cursor-pointer">Code2Cash</span>
+            
+                        <img src="src/assets/logo.png" alt="Logo" className="h-64 w-auto brightness-0 invert" />
+                       
+            
           </Link>
 
           {/* Desktop Navigation */}
