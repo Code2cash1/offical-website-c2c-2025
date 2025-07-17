@@ -6,18 +6,40 @@ import { useDropzone } from "react-dropzone";
 
 Modal.setAppElement("#root");
 
-const positions = [
-  { title: "Frontend Developer Intern", type: "Part-time", location: "Remote"},
-  { title: "UI/UX Designer", type: "Part-time", location: "remote"},
-  { title: "Backend Developer", type: "Part-time", location: "Remote"},
-  { title: "Mern-Stack Developer Intern", type: "Full-time", location: "Remote" }
-];
+// Will be fetched from API
 
 export default function CareersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [appliedJobs, setAppliedJobs] = useState(new Set(JSON.parse(sessionStorage.getItem("appliedJobs") || "[]")));
+  const [currentPosition, setCurrentPosition] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [positions, setPositions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: ""
+  });
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/jobs/active');
+      if (response.ok) {
+        const data = await response.json();
+        setPositions(data);
+      }
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -33,22 +55,73 @@ export default function CareersPage() {
 
   const handleApplyNowClick = (jobTitle: string) => {
     if (!appliedJobs.has(jobTitle)) {
+      setCurrentPosition(jobTitle);
       setIsModalOpen(true);
     }
   };
 
-  const handleModalClose = () => setIsModalOpen(false);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>, jobTitle: string) => {
-    event.preventDefault();
-    const updatedJobs = new Set(appliedJobs);
-    updatedJobs.add(jobTitle);
-    setAppliedJobs(updatedJobs);
-    sessionStorage.setItem("appliedJobs", JSON.stringify([...updatedJobs]));
+  const handleModalClose = () => {
     setIsModalOpen(false);
-    setIsSuccessPopupOpen(true);
-    setTimeout(() => setIsSuccessPopupOpen(false), 3000);
+    setFormData({ name: "", phone: "", email: "" });
+    setResumeFile(null);
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const submitData = new FormData();
+      submitData.append('name', formData.name);
+      submitData.append('email', formData.email);
+      submitData.append('phone', formData.phone);
+      submitData.append('position', currentPosition);
+      submitData.append('experience', 'Entry Level'); // Default for now
+      if (resumeFile) {
+        submitData.append('resume', resumeFile);
+      }
+
+      const response = await fetch('http://localhost:5000/api/careers/apply', {
+        method: 'POST',
+        body: submitData,
+      });
+
+      if (response.ok) {
+        const updatedJobs = new Set(appliedJobs);
+        updatedJobs.add(currentPosition);
+        setAppliedJobs(updatedJobs);
+        sessionStorage.setItem("appliedJobs", JSON.stringify([...updatedJobs]));
+        setIsModalOpen(false);
+        setIsSuccessPopupOpen(true);
+        setTimeout(() => setIsSuccessPopupOpen(false), 3000);
+        setFormData({ name: "", phone: "", email: "" });
+        setResumeFile(null);
+      } else {
+        const error = await response.json();
+        alert('Error submitting application: ' + (error.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      alert('Error submitting application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black pt-32 pb-24 text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black pt-32 pb-24 text-white ">
@@ -62,10 +135,16 @@ export default function CareersPage() {
           Join Our Team
         </motion.h2>
 
-        <div className="grid gap-6 max-w-4xl mx-auto  " >
-          {positions.map((position, index) => (
+        {positions.length === 0 ? (
+          <div className="text-center text-gray-400 mt-12">
+            <p className="text-xl">No job openings available at the moment.</p>
+            <p className="text-sm mt-2">Please check back later for new opportunities.</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 max-w-4xl mx-auto  " >
+          {positions.map((position: any, index) => (
             <motion.div 
-            key={index} 
+            key={position._id} 
             initial={{ opacity: 0, x: -50 }} 
             animate={{ opacity: 1, x: 0 }} 
             transition={{ duration: 0.8, delay: index * 0.07 }} 
@@ -84,9 +163,20 @@ export default function CareersPage() {
                   <div className="flex flex-wrap gap-4 text-gray-400">
                     <div className="flex items-center gap-2"><Clock className="w-4 h-4" /><span>{position.type}</span></div>
                     <div className="flex items-center gap-2"><MapPin className="w-4 h-4" /><span>{position.location}</span></div>
-                    {/* <div className="flex items-center gap-2"><DollarSign className="w-4 h-4" /><span>{position.salary}</span></div>
-                    <div className="flex items-center gap-2"><Briefcase className="w-4 h-4" /><span>{position.experience}</span></div> */}
+                    {position.experience && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">{position.experience}</span>
+                      </div>
+                    )}
+                    {position.salary && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">{position.salary}</span>
+                      </div>
+                    )}
                   </div>
+                  {position.description && (
+                    <p className="text-gray-300 mt-2 text-sm">{position.description.substring(0, 150)}...</p>
+                  )}
                 </div>
                 <button 
                   onClick={() => handleApplyNowClick(position.title)} 
@@ -98,6 +188,7 @@ export default function CareersPage() {
             </motion.div>
           ))}
         </div>
+        )}
 
         <Modal 
           isOpen={isModalOpen} 
@@ -119,14 +210,45 @@ export default function CareersPage() {
             >
               Apply Now
             </motion.h3>
-            <form onSubmit={(e) => handleSubmit(e, positions.find(p => !appliedJobs.has(p.title))?.title || "")} className="space-y-4">
-              <input type="text" placeholder="Name" className="bg-white/10 rounded-2xl px-4 py-3 text-white w-full placeholder:text-gray-400" required />
-              <input type="tel" placeholder="Phone Number" className="bg-white/10 rounded-2xl px-4 py-3 text-white w-full placeholder:text-gray-400" required />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input 
+                type="text" 
+                name="name"
+                placeholder="Name" 
+                value={formData.name}
+                onChange={handleInputChange}
+                className="bg-white/10 rounded-2xl px-4 py-3 text-white w-full placeholder:text-gray-400" 
+                required 
+              />
+              <input 
+                type="email" 
+                name="email"
+                placeholder="Email" 
+                value={formData.email}
+                onChange={handleInputChange}
+                className="bg-white/10 rounded-2xl px-4 py-3 text-white w-full placeholder:text-gray-400" 
+                required 
+              />
+              <input 
+                type="tel" 
+                name="phone"
+                placeholder="Phone Number" 
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="bg-white/10 rounded-2xl px-4 py-3 text-white w-full placeholder:text-gray-400" 
+                required 
+              />
               <div {...getRootProps()} className="border border-dashed border-gray-400 rounded-lg p-4 text-center cursor-pointer bg-white/10 hover:bg-white/20 transition-colors duration-300">
                 <input {...getInputProps()} />
                 {resumeFile ? <p className="text-white">{resumeFile.name}</p> : <p className="text-gray-400"><Upload className="inline w-6 h-6" /> Drag & drop your resume or click to upload</p>}
               </div>
-              <button type="submit" className="bg-purple-500 text-white rounded-2xl px-6 py-3 font-medium hover:bg-purple-700 duration-500 w-full">Submit Application</button>
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="bg-purple-500 text-white rounded-2xl px-6 py-3 font-medium hover:bg-purple-700 duration-500 w-full disabled:opacity-50"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Application'}
+              </button>
             </form>
           </motion.div>
         </Modal>

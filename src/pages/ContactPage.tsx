@@ -4,20 +4,46 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
 export default function ContactPage() {
   const [messageSent, setMessageSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Check if the message has already been sent in this session
-    if (!sessionStorage.getItem('messageSent')) {
-      sessionStorage.setItem('messageSent', 'true');
-      setMessageSent(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/contacts/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Simulate message send delay (e.g., API call)
-      setTimeout(() => {
-        // After successful submission, show the message
+      if (response.ok) {
         setMessageSent(true);
-      }, 1000);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        const error = await response.json();
+        alert('Error sending message: ' + (error.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Error sending message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
   return (
@@ -90,7 +116,10 @@ export default function ContactPage() {
                   <div>
                     <input
                       type="text"
+                      name="name"
                       placeholder="Your Name"
+                      value={formData.name}
+                      onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl "
                     />
@@ -98,7 +127,21 @@ export default function ContactPage() {
                   <div>
                     <input
                       type="email"
+                      name="email"
                       placeholder="Your Email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl "
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      name="subject"
+                      placeholder="Subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl "
                     />
@@ -106,16 +149,20 @@ export default function ContactPage() {
                   <div>
                     <textarea
                       rows={4}
+                      name="message"
                       placeholder="Your Message"
+                      value={formData.message}
+                      onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 hover:shadow-xl "
                     ></textarea>
                   </div>
                   <button
                     type="submit"
-                    className="w-full px-8 py-4 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-600 transition-colors duration-300 flex items-center justify-center gap-2 "
+                    disabled={isSubmitting}
+                    className="w-full px-8 py-4 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-600 transition-colors duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
                   >
-                    Send Message
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                     <Send className="w-4 h-4" />
                   </button>
                 </form>

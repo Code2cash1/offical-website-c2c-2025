@@ -5,6 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function BookMeeting() {
   const [showPopup, setShowPopup] = useState(false);
   const [isBooked, setIsBooked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    message: '',
+    preferredDate: '',
+    preferredTime: ''
+  });
 
   useEffect(() => {
     const meetingStatus = sessionStorage.getItem('meetingBooked');
@@ -13,18 +23,43 @@ export default function BookMeeting() {
     }
   }, []);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     try {
-      sessionStorage.setItem('meetingBooked', 'true');
-      setIsBooked(true);
-      setShowPopup(true);
-      setTimeout(() => {
-        setShowPopup(false);
-        window.location.href = '/';
-      }, 2000);
+      const response = await fetch('http://localhost:5000/api/meetings/request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        sessionStorage.setItem('meetingBooked', 'true');
+        setIsBooked(true);
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+          window.location.href = '/';
+        }, 2000);
+      } else {
+        const error = await response.json();
+        alert('Error booking meeting: ' + (error.message || 'Unknown error'));
+      }
     } catch (error) {
       console.error('Error booking meeting:', error);
+      alert('Error booking meeting. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -75,34 +110,103 @@ export default function BookMeeting() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-white font-medium mb-2">Your Name</label>
-                  <input type="text" placeholder="Your Name" required className="w-full px-4 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg" />
+                  <input 
+                    type="text" 
+                    name="name"
+                    placeholder="Your Name" 
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required 
+                    className="w-full px-4 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg" 
+                  />
                 </div>
                 <div>
                   <label className="block text-white font-medium mb-2">Your Email</label>
-                  <input type="email" placeholder="Your Email" required className="w-full px-4 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg" />
+                  <input 
+                    type="email" 
+                    name="email"
+                    placeholder="Your Email" 
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required 
+                    className="w-full px-4 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg" 
+                  />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-white font-medium mb-2">Meeting Date</label>
+                  <label className="block text-white font-medium mb-2">Phone Number</label>
+                  <input 
+                    type="tel" 
+                    name="phone"
+                    placeholder="Your Phone Number" 
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required 
+                    className="w-full px-4 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-white font-medium mb-2">Company</label>
+                  <input 
+                    type="text" 
+                    name="company"
+                    placeholder="Your Company" 
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    required 
+                    className="w-full px-4 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg" 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-white font-medium mb-2">Message</label>
+                <textarea 
+                  name="message"
+                  placeholder="Tell us about your project or requirements" 
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows={4}
+                  required 
+                  className="w-full px-4 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg resize-none" 
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-white font-medium mb-2">Preferred Date</label>
                   <div className="relative">
                     <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-white" />
-                    <input type="date" required className="w-full pl-12 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg cursor-pointer" />
+                    <input 
+                      type="date" 
+                      name="preferredDate"
+                      value={formData.preferredDate}
+                      onChange={handleInputChange}
+                      required 
+                      className="w-full pl-12 py-3 bg-transparent border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg cursor-pointer" 
+                    />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-white font-medium mb-2">Meeting Time</label>
+                  <label className="block text-white font-medium mb-2">Preferred Time</label>
                   <div className="relative">
                     <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-white" />
-                    <select required className="w-full pl-12 py-3 bg-slate-950 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg">
+                    <select 
+                      name="preferredTime"
+                      value={formData.preferredTime}
+                      onChange={handleInputChange}
+                      required 
+                      className="w-full pl-12 py-3 bg-slate-950 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none shadow-lg"
+                    >
                       <option value="">Select Time</option>
-                      <option value="10:00">10:00 AM</option>
-                      <option value="11:00">11:00 AM</option>
-                      <option value="14:00">1:00 PM</option>
-                      <option value="16:00">4:00 PM</option>
-                      <option value="18:00">6:00 PM</option>
-                      <option value="20:00">8:00 PM</option>
+                      <option value="10:00 AM">10:00 AM</option>
+                      <option value="11:00 AM">11:00 AM</option>
+                      <option value="1:00 PM">1:00 PM</option>
+                      <option value="4:00 PM">4:00 PM</option>
+                      <option value="6:00 PM">6:00 PM</option>
+                      <option value="8:00 PM">8:00 PM</option>
                     </select>
                   </div>
                 </div>
@@ -110,11 +214,12 @@ export default function BookMeeting() {
 
               <motion.button 
                 type="submit" 
-                className="w-full py-4 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-700 transform hover:-translate-y-1 transition-all duration-300"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-700 transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Schedule Meeting
+                {isSubmitting ? 'Scheduling...' : 'Schedule Meeting'}
               </motion.button>
             </motion.form>
           )}

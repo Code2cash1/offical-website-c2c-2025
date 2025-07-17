@@ -31,6 +31,7 @@ export default function Footer() {
               <li id='team'><Link to="/team" className="hover:text-purple-800 transition-colors">Team</Link></li>
               <li id='career'><Link to="/careers" className="hover:text-purple-800 transition-colors">Career</Link></li>
               <li id='contact'><Link to="/contact" className="hover:text-purple-800 transition-colors">Contact Us</Link></li>
+              <li id='admin'><Link to="/admin/login" className="hover:text-red-400 transition-colors">Admin Login</Link></li>
             </ul>
           </div>          
           <div>
