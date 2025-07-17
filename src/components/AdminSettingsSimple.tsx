@@ -74,7 +74,7 @@ const AdminSettingsSimple: React.FC = () => {
         <h2 className="text-lg font-semibold mb-4">Profile Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Username</label>
+            <label className="block text-sm font-medium text-gray-600">Username</label>
             <input
               type="text"
               value="admin"
