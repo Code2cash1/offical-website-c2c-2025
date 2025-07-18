@@ -126,8 +126,15 @@ export default function CareersPage() {
         setFormData({ name: "", phone: "", email: "" });
         setResumeFile(null);
       } else {
-        const error = await response.json();
-        alert('Error submitting application: ' + (error.message || 'Unknown error'));
+        let errorMessage = 'Unknown error';
+        try {
+          const error = await response.json();
+          errorMessage = error.message || 'Unknown error';
+        } catch (parseError) {
+          // If JSON parsing fails, use the response status
+          errorMessage = `Server error (${response.status}): ${response.statusText}`;
+        }
+        alert('Error submitting application: ' + errorMessage);
       }
     } catch (error) {
       console.error('Error submitting application:', error);
