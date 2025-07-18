@@ -36,11 +36,11 @@ function App() {
       <Routes>
         {/* Admin Routes - with normal cursor */}
         <Route 
-          path="https://c2cbackend.vercel.app/admin/login" 
+          path="/admin/login" 
           element={<AdminLogin onLogin={handleAdminLogin} />} 
         />
         <Route 
-          path="https://c2cbackend.vercel.app/admin/*" 
+          path="/admin/*" 
           element={
             adminToken ? (
               <AdminDashboard onLogout={handleAdminLogout} />
@@ -50,7 +50,7 @@ function App() {
           } 
         />
         <Route 
-          path="https://c2cbackend.vercel.app/admin" 
+          path="/admin" 
           element={
             adminToken ? (
               <AdminDashboard onLogout={handleAdminLogout} />
