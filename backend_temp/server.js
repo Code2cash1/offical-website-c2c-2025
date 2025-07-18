@@ -57,15 +57,36 @@ app.get('/api/test', (req, res) => {
 
 // Routes
 try {
-  app.use('/api/auth', require('./routes/auth'));
-  app.use('/api/careers', require('./routes/careers'));
-  app.use('/api/meetings', require('./routes/meetings'));
-  app.use('/api/contacts', require('./routes/contacts'));
-  app.use('/api/admin', require('./routes/admin'));
-  app.use('/api/jobs', require('./routes/jobs'));
+  console.log('Loading routes...');
+  
+  const authRoutes = require('./routes/auth');
+  app.use('/api/auth', authRoutes);
+  console.log('Auth routes loaded');
+  
+  const careersRoutes = require('./routes/careers');
+  app.use('/api/careers', careersRoutes);
+  console.log('Careers routes loaded');
+  
+  const meetingsRoutes = require('./routes/meetings');
+  app.use('/api/meetings', meetingsRoutes);
+  console.log('Meetings routes loaded');
+  
+  const contactsRoutes = require('./routes/contacts');
+  app.use('/api/contacts', contactsRoutes);
+  console.log('Contacts routes loaded');
+  
+  const adminRoutes = require('./routes/admin');
+  app.use('/api/admin', adminRoutes);
+  console.log('Admin routes loaded');
+  
+  const jobsRoutes = require('./routes/jobs');
+  app.use('/api/jobs', jobsRoutes);
+  console.log('Jobs routes loaded');
+  
   console.log('All routes loaded successfully');
 } catch (error) {
   console.error('Error loading routes:', error);
+  console.error('Error stack:', error.stack);
 }
 
 // Upload folder for static files
