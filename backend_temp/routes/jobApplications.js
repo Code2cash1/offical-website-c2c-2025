@@ -63,6 +63,9 @@ router.post('/apply', upload.single('resume'), async (req, res) => {
 
     await application.save();
     
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(201).json({ 
       message: 'Application submitted successfully',
       applicationId: application._id

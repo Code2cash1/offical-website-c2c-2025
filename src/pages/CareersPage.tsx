@@ -17,7 +17,15 @@ export default function CareersPage() {
   const [currentPosition, setCurrentPosition] = useState("");
   const [selectedJob, setSelectedJob] = useState<{id: string, title: string} | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [positions, setPositions] = useState<any[]>([]);
+  const [positions, setPositions] = useState<{
+    _id: string;
+    title: string;
+    type: string;
+    location: string;
+    experience?: string;
+    salary?: string;
+    description?: string;
+  }[]>([]);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
@@ -251,7 +259,7 @@ export default function CareersPage() {
               </div>
               <button 
                 type="submit" 
-                disabled={isSubmitting}
+                disabled={isSubmitting || !resumeFile}
                 className="bg-purple-500 text-white rounded-2xl px-6 py-3 font-medium hover:bg-purple-700 duration-500 w-full disabled:opacity-50"
               >
                 {isSubmitting ? 'Submitting...' : 'Submit Application'}
