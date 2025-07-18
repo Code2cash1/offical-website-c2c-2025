@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 interface Application {
   _id: string;
@@ -129,7 +130,7 @@ const ApplicationModal: React.FC<ApplicationModalProps> = ({
 
             <div className="flex justify-between">
               <a
-                href={`http://localhost:5000/api/careers/resume/${application._id}`}
+                href={`${API_BASE_URL}/api/careers/resume/${application._id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
@@ -187,7 +188,7 @@ const AdminCareers: React.FC = () => {
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/careers/applications', {
+      const response = await fetch(`${API_BASE_URL}/api/careers/applications`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -232,7 +233,7 @@ const AdminCareers: React.FC = () => {
   const handleStatusUpdate = async (id: string, status: string, notes?: string) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/careers/applications/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/careers/applications/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -259,7 +260,7 @@ const AdminCareers: React.FC = () => {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/careers/applications/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/careers/applications/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -435,7 +436,7 @@ const AdminCareers: React.FC = () => {
                         View
                       </button>
                       <a
-                        href={`http://localhost:5000/api/careers/resume/${application._id}`}
+                        href={`${API_BASE_URL}/api/careers/resume/${application._id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-900"

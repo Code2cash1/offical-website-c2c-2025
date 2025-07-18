@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { API_BASE_URL } from '../config/api';
 
 export default function ContactPage() {
   const [messageSent, setMessageSent] = useState(false);
@@ -24,7 +25,7 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/contacts/message', {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

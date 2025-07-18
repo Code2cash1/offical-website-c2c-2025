@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 interface AdminProfile {
   id: string;
@@ -89,7 +90,7 @@ const AdminSettings: React.FC = () => {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/admin/profile', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -107,7 +108,7 @@ const AdminSettings: React.FC = () => {
   const fetchSystemSettings = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/admin/system-settings', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/system-settings`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -164,7 +165,7 @@ const AdminSettings: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/auth/change-password', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -196,7 +197,7 @@ const AdminSettings: React.FC = () => {
     setResetLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/admin-reset-password', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/admin-reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -223,7 +224,7 @@ const AdminSettings: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/admin/system-settings', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/system-settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -250,7 +251,7 @@ const AdminSettings: React.FC = () => {
     setExportLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/admin/export', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/export`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -290,7 +291,7 @@ const AdminSettings: React.FC = () => {
     setCleanupLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/admin/cleanup', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/cleanup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

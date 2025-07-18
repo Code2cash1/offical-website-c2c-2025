@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 const AdminMessagesSimple: React.FC = () => {
   const [messages, setMessages] = useState([]);
@@ -12,7 +13,7 @@ const AdminMessagesSimple: React.FC = () => {
   const fetchMessages = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/contacts/messages', {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/messages`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -34,7 +35,7 @@ const AdminMessagesSimple: React.FC = () => {
   const handleMarkAsRead = async (id: string) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/contacts/message/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/message/${id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -55,7 +56,7 @@ const AdminMessagesSimple: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this message?')) {
       try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`http://localhost:5000/api/contacts/message/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/contacts/message/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,

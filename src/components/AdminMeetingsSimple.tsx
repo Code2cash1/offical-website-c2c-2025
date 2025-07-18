@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
+import { API_BASE_URL } from '../config/api';
 
 const AdminMeetingsSimple: React.FC = () => {
   const [meetings, setMeetings] = useState([]);
@@ -14,7 +15,7 @@ const AdminMeetingsSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        "http://localhost:5000/api/meetings/requests",
+        `${API_BASE_URL}/api/meetings/requests`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,7 +40,7 @@ const AdminMeetingsSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        `http://localhost:5000/api/meetings/request/${id}/status`,
+        `${API_BASE_URL}/api/meetings/request/${id}/status`,
         {
           method: "PATCH",
           headers: {
@@ -62,7 +63,7 @@ const AdminMeetingsSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        `http://localhost:5000/api/meetings/request/${id}/status`,
+        `${API_BASE_URL}/api/meetings/request/${id}/status`,
         {
           method: "PATCH",
           headers: {
@@ -88,7 +89,7 @@ const AdminMeetingsSimple: React.FC = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await fetch(
-          `http://localhost:5000/api/meetings/request/${id}`,
+          `${API_BASE_URL}/api/meetings/request/${id}`,
           {
             method: "DELETE",
             headers: {

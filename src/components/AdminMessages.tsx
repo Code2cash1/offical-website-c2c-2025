@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 interface ContactMessage {
   id: string;
@@ -42,7 +43,7 @@ const AdminMessages: React.FC<AdminMessagesProps> = ({ token }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/contacts/messages', {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/messages`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -90,7 +91,7 @@ const AdminMessages: React.FC<AdminMessagesProps> = ({ token }) => {
 
   const updateMessageStatus = async (messageId: string, newStatus: 'unread' | 'read' | 'replied') => {
     try {
-      const response = await fetch(`http://localhost:5000/api/contacts/messages/${messageId}/status`, {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/messages/${messageId}/status`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -113,7 +114,7 @@ const AdminMessages: React.FC<AdminMessagesProps> = ({ token }) => {
 
   const updateMessagePriority = async (messageId: string, newPriority: 'low' | 'medium' | 'high') => {
     try {
-      const response = await fetch(`http://localhost:5000/api/contacts/messages/${messageId}/priority`, {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/messages/${messageId}/priority`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -136,7 +137,7 @@ const AdminMessages: React.FC<AdminMessagesProps> = ({ token }) => {
 
   const updateMessageNotes = async (messageId: string, notes: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/contacts/messages/${messageId}/notes`, {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/messages/${messageId}/notes`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -162,7 +163,7 @@ const AdminMessages: React.FC<AdminMessagesProps> = ({ token }) => {
     if (!confirm('Are you sure you want to delete this message?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/contacts/messages/${messageId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/messages/${messageId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

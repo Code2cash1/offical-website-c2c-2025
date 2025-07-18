@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, Eye, ToggleLeft, ToggleRight } from "lucide-react";
+import { API_BASE_URL } from '../config/api';
 
 const AdminJobsSimple: React.FC = () => {
   const [jobs, setJobs] = useState([]);
@@ -26,7 +27,7 @@ const AdminJobsSimple: React.FC = () => {
   const fetchJobs = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await fetch("http://localhost:5000/api/jobs", {
+      const response = await fetch(`${API_BASE_URL}/api/jobs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,8 +89,8 @@ const AdminJobsSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const url = isEditing
-        ? `http://localhost:5000/api/jobs/${selectedJob._id}`
-        : "http://localhost:5000/api/jobs";
+        ? `${API_BASE_URL}/api/jobs/${selectedJob._id}`
+        : `${API_BASE_URL}/api/jobs`;
 
       const method = isEditing ? "PUT" : "POST";
 
@@ -157,7 +158,7 @@ const AdminJobsSimple: React.FC = () => {
     if (window.confirm("Are you sure you want to delete this job posting?")) {
       try {
         const token = localStorage.getItem("adminToken");
-        const response = await fetch(`http://localhost:5000/api/jobs/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -176,7 +177,7 @@ const AdminJobsSimple: React.FC = () => {
   const toggleJobStatus = async (id: string, currentStatus: boolean) => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await fetch(`http://localhost:5000/api/jobs/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

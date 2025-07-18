@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { API_BASE_URL } from '../config/api';
 import AdminOverview from './AdminOverview';
 import AdminCareers from './AdminCareers';
 import AdminMeetings from './AdminMeetings';
@@ -36,7 +37,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const fetchAdminData = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/auth/verify', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/verify`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

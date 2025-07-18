@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 interface Meeting {
   _id: string;
@@ -216,7 +217,7 @@ const AdminMeetings: React.FC = () => {
       setLoading(true);
       setError(null);
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/meetings/requests', {
+      const response = await fetch(`${API_BASE_URL}/api/meetings/requests`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -259,7 +260,7 @@ const AdminMeetings: React.FC = () => {
   const handleUpdateMeeting = async (id: string, updates: Partial<Meeting>) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/meetings/requests/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/meetings/requests/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -284,7 +285,7 @@ const AdminMeetings: React.FC = () => {
   const handleDeleteMeeting = async (id: string) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/meetings/requests/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/meetings/requests/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

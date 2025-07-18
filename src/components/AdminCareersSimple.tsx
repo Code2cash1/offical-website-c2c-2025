@@ -8,6 +8,7 @@ import {
   FileText,
   Calendar,
 } from "lucide-react";
+import { API_BASE_URL } from '../config/api';
 
 const AdminCareersSimple: React.FC = () => {
   const [applications, setApplications] = useState([]);
@@ -26,7 +27,7 @@ const AdminCareersSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        "http://localhost:5000/api/careers/applications",
+        `${API_BASE_URL}/api/careers/applications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -60,7 +61,7 @@ const AdminCareersSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        `http://localhost:5000/api/careers/application/${selectedApplication._id}/status`,
+        `${API_BASE_URL}/api/careers/application/${selectedApplication._id}/status`,
         {
           method: "PATCH",
           headers: {
@@ -82,7 +83,7 @@ const AdminCareersSimple: React.FC = () => {
 
   const handleDownloadResume = (resumeUrl: string, applicantName: string) => {
     const link = document.createElement("a");
-    link.href = `http://localhost:5000/${resumeUrl}`;
+    link.href = `${API_BASE_URL}/${resumeUrl}`;
     link.download = `${applicantName}_resume.pdf`;
     link.target = "_blank";
     document.body.appendChild(link);
@@ -95,7 +96,7 @@ const AdminCareersSimple: React.FC = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await fetch(
-          `http://localhost:5000/api/careers/application/${id}`,
+          `${API_BASE_URL}/api/careers/application/${id}`,
           {
             method: "DELETE",
             headers: {
@@ -412,7 +413,7 @@ const AdminCareersSimple: React.FC = () => {
                 </label>
                 <div className="border border-gray-600 rounded-md p-2 bg-gray-800">
                   <iframe
-                    src={`http://localhost:5000/${selectedApplication.resumeUrl}`}
+                    src={`${API_BASE_URL}/${selectedApplication.resumeUrl}`}
                     width="100%"
                     height="800px"
                     className="border-0 rounded-md"
@@ -421,7 +422,7 @@ const AdminCareersSimple: React.FC = () => {
                 </div>
                 <div className="flex justify-center">
                   <a
-                    href={`http://localhost:5000/${selectedApplication.resumeUrl}`}
+                    href={`${API_BASE_URL}/${selectedApplication.resumeUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-purple-400 hover:text-purple-300 flex items-center transition-colors"

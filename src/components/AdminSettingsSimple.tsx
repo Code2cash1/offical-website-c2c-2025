@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 const AdminSettingsSimple: React.FC = () => {
   const [passwordData, setPasswordData] = useState({
@@ -31,7 +32,7 @@ const AdminSettingsSimple: React.FC = () => {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/auth/change-password', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

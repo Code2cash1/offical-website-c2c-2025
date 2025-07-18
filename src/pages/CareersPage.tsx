@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import {  ChevronRight, MapPin,  Clock, Upload, CheckCircle } from "lucide-react";
 import Modal from "react-modal";
 import { useDropzone } from "react-dropzone";
+import { API_BASE_URL } from '../config/api';
 
 Modal.setAppElement("#root");
 
@@ -29,7 +30,7 @@ export default function CareersPage() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/jobs/active');
+      const response = await fetch(`${API_BASE_URL}/api/jobs/active`);
       if (response.ok) {
         const data = await response.json();
         setPositions(data);
@@ -88,7 +89,7 @@ export default function CareersPage() {
         submitData.append('resume', resumeFile);
       }
 
-      const response = await fetch('http://localhost:5000/api/careers/apply', {
+      const response = await fetch(`${API_BASE_URL}/api/careers/apply`, {
         method: 'POST',
         body: submitData,
       });

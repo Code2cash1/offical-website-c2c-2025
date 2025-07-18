@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 interface DashboardStats {
   careers: {
@@ -66,7 +67,7 @@ const AdminOverview: React.FC = () => {
   const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/admin/dashboard', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/dashboard`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
