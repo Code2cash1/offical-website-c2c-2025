@@ -14,6 +14,7 @@ app.use(cors({
     'http://localhost:3000', 
     'http://localhost:5173', 
     'http://localhost:5174',
+    'https://code2cash.vercel.app',
     'https://offical-website-c2c-2025.vercel.app',
     'https://offical-website-c2c-2025-git-main-code2cash1s-projects.vercel.app',
     'https://offical-website-c2c-2025-code2cash1s-projects.vercel.app'
