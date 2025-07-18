@@ -43,17 +43,30 @@ app.get('/health', (req, res) => {
     status: 'OK', 
     message: 'Backend API is healthy',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    mongodb: process.env.MONGODB_URI ? 'configured' : 'missing'
+  });
+});
+
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    message: 'API routes are working!',
+    timestamp: new Date().toISOString()
   });
 });
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/careers', require('./routes/careers'));
-app.use('/api/meetings', require('./routes/meetings'));
-app.use('/api/contacts', require('./routes/contacts'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/jobs', require('./routes/jobs'));
+try {
+  app.use('/api/auth', require('./routes/auth'));
+  app.use('/api/careers', require('./routes/careers'));
+  app.use('/api/meetings', require('./routes/meetings'));
+  app.use('/api/contacts', require('./routes/contacts'));
+  app.use('/api/admin', require('./routes/admin'));
+  app.use('/api/jobs', require('./routes/jobs'));
+  console.log('All routes loaded successfully');
+} catch (error) {
+  console.error('Error loading routes:', error);
+}
 
 // Upload folder for static files
 app.use('/uploads', express.static('uploads'));
