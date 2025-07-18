@@ -4,6 +4,7 @@ import {  ChevronRight, MapPin,  Clock, Upload, CheckCircle } from "lucide-react
 import Modal from "react-modal";
 import { useDropzone } from "react-dropzone";
 import { API_BASE_URL } from '../config/api';
+import JobApplicationForm from '../components/JobApplicationForm';
 
 Modal.setAppElement("#root");
 
@@ -15,6 +16,7 @@ export default function CareersPage() {
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [appliedJobs, setAppliedJobs] = useState(new Set(JSON.parse(sessionStorage.getItem("appliedJobs") || "[]")));
   const [currentPosition, setCurrentPosition] = useState("");
+  const [selectedJob, setSelectedJob] = useState<{id: string, title: string} | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [positions, setPositions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,17 +56,24 @@ export default function CareersPage() {
     multiple: false
   });
 
-  const handleApplyNowClick = (jobTitle: string) => {
-    if (!appliedJobs.has(jobTitle)) {
-      setCurrentPosition(jobTitle);
-      setIsModalOpen(true);
+  const handleApplyNowClick = (job: any) => {
+    if (!appliedJobs.has(job.title)) {
+      setSelectedJob({ id: job._id, title: job.title });
     }
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setFormData({ name: "", phone: "", email: "" });
-    setResumeFile(null);
+  const handleJobApplicationClose = () => {
+    setSelectedJob(null);
+  };
+  
+  const handleJobApplicationSuccess = () => {
+    if (selectedJob) {
+      const newAppliedJobs = new Set(appliedJobs);
+      newAppliedJobs.add(selectedJob.title);
+      setAppliedJobs(newAppliedJobs);
+      sessionStorage.setItem("appliedJobs", JSON.stringify(Array.from(newAppliedJobs)));
+      setIsSuccessPopupOpen(true);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,7 +189,7 @@ export default function CareersPage() {
                   )}
                 </div>
                 <button 
-                  onClick={() => handleApplyNowClick(position.title)} 
+                  onClick={() => handleApplyNowClick(position)} 
                   className={`px-6 py-3 rounded-full transition-colors duration-300 flex items-center gap-2 ${appliedJobs.has(position.title) ? "bg-green-500 text-white" : "bg-purple-500 text-white hover:bg-purple-600"}`}
                 >
                   {appliedJobs.has(position.title) ? "Applied" : "Apply Now"} {appliedJobs.has(position.title) ? <CheckCircle className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -260,6 +269,15 @@ export default function CareersPage() {
               <CheckCircle className="w-5 h-5" /> Your application has been sent! We'll connect soon.
             </div>
           </motion.div>
+        )}
+
+        {selectedJob && (
+          <JobApplicationForm
+            jobId={selectedJob.id}
+            jobTitle={selectedJob.title}
+            onClose={handleJobApplicationClose}
+            onSuccess={handleJobApplicationSuccess}
+          />
         )}
       </div>
     </div>

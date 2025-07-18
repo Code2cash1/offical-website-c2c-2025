@@ -83,6 +83,10 @@ try {
   app.use('/api/jobs', jobsRoutes);
   console.log('Jobs routes loaded');
   
+  const jobApplicationsRoutes = require('./routes/jobApplications');
+  app.use('/api/job-applications', jobApplicationsRoutes);
+  console.log('Job applications routes loaded');
+  
   console.log('All routes loaded successfully');
 } catch (error) {
   console.error('Error loading routes:', error);
