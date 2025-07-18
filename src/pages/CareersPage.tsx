@@ -4,7 +4,6 @@ import {  ChevronRight, MapPin,  Clock, Upload, CheckCircle } from "lucide-react
 import Modal from "react-modal";
 import { useDropzone } from "react-dropzone";
 import { API_BASE_URL } from '../config/api';
-import JobApplicationForm from '../components/JobApplicationForm';
 
 Modal.setAppElement("#root");
 
@@ -18,7 +17,7 @@ export default function CareersPage() {
   const [currentPosition, setCurrentPosition] = useState("");
   const [selectedJob, setSelectedJob] = useState<{id: string, title: string} | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [positions, setPositions] = useState([]);
+  const [positions, setPositions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
@@ -56,7 +55,7 @@ export default function CareersPage() {
     multiple: false
   });
 
-  const handleApplyNowClick = (job: any) => {
+  const handleApplyNowClick = (job: {_id: string, title: string}) => {
     if (!appliedJobs.has(job.title)) {
       setCurrentPosition(job.title);
       setSelectedJob({ id: job._id, title: job.title });
@@ -68,20 +67,6 @@ export default function CareersPage() {
     setIsModalOpen(false);
     setFormData({ name: "", phone: "", email: "" });
     setResumeFile(null);
-  };
-
-  const handleJobApplicationClose = () => {
-    setSelectedJob(null);
-  };
-  
-  const handleJobApplicationSuccess = () => {
-    if (selectedJob) {
-      const newAppliedJobs = new Set(appliedJobs);
-      newAppliedJobs.add(selectedJob.title);
-      setAppliedJobs(newAppliedJobs);
-      sessionStorage.setItem("appliedJobs", JSON.stringify(Array.from(newAppliedJobs)));
-      setIsSuccessPopupOpen(true);
-    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,14 +111,7 @@ export default function CareersPage() {
         setFormData({ name: "", phone: "", email: "" });
         setResumeFile(null);
       } else {
-        let errorMessage = 'Unknown error';
-        try {
-          const error = await response.json();
-          errorMessage = error.message || 'Unknown error';
-        } catch (parseError) {
-          // If JSON parsing fails, use the response status
-          errorMessage = `Server error (${response.status}): ${response.statusText}`;
-        }
+        const errorMessage = await response.text();
         alert('Error submitting application: ' + errorMessage);
       }
     } catch (error) {
@@ -171,7 +149,7 @@ export default function CareersPage() {
           </div>
         ) : (
           <div className="grid gap-6 max-w-4xl mx-auto  " >
-          {positions.map((position: any, index) => (
+          {positions.map((position, index) => (
             <motion.div 
             key={position._id} 
             initial={{ opacity: 0, x: -50 }} 
