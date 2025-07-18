@@ -58,8 +58,16 @@ export default function CareersPage() {
 
   const handleApplyNowClick = (job: any) => {
     if (!appliedJobs.has(job.title)) {
+      setCurrentPosition(job.title);
       setSelectedJob({ id: job._id, title: job.title });
+      setIsModalOpen(true);
     }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setFormData({ name: "", phone: "", email: "" });
+    setResumeFile(null);
   };
 
   const handleJobApplicationClose = () => {
@@ -89,16 +97,20 @@ export default function CareersPage() {
 
     try {
       const submitData = new FormData();
-      submitData.append('name', formData.name);
+      submitData.append('fullName', formData.name);
       submitData.append('email', formData.email);
       submitData.append('phone', formData.phone);
-      submitData.append('position', currentPosition);
-      submitData.append('experience', 'Entry Level'); // Default for now
+      submitData.append('experience', 'Entry Level');
+      submitData.append('coverLetter', `I am interested in applying for the ${currentPosition} position.`);
+      
+      if (selectedJob) {
+        submitData.append('jobId', selectedJob.id);
+      }
       if (resumeFile) {
         submitData.append('resume', resumeFile);
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/careers/apply`, {
+      const response = await fetch(`${API_BASE_URL}/api/job-applications/apply`, {
         method: 'POST',
         body: submitData,
       });
@@ -271,14 +283,7 @@ export default function CareersPage() {
           </motion.div>
         )}
 
-        {selectedJob && (
-          <JobApplicationForm
-            jobId={selectedJob.id}
-            jobTitle={selectedJob.title}
-            onClose={handleJobApplicationClose}
-            onSuccess={handleJobApplicationSuccess}
-          />
-        )}
+
       </div>
     </div>
   );}
