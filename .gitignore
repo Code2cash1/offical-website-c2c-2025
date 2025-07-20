@@ -22,3 +22,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Backend test files
+backend_temp/test-*.js
+backend_temp/uploads/*.pdf
+
+# Vercel
+.vercel
