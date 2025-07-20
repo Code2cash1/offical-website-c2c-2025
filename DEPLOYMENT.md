@@ -15,9 +15,16 @@ VITE_API_URL=https://offical-website-c2c-2025.vercel.app
 ### Backend (offical-website-c2c-2025.vercel.app)
 ```
 MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
+JWT_SECRET=your_jwt_secret_key_minimum_32_characters
+ADMIN_PASSWORD=admin123
 NODE_ENV=production
+PORT=5000
 ```
+
+**Important**: Make sure to set these environment variables in your Vercel backend deployment:
+1. Go to Vercel Dashboard → Your Backend Project → Settings → Environment Variables
+2. Add each variable above with proper values
+3. Redeploy the backend after adding environment variables
 
 ## 📁 Project Structure
 
