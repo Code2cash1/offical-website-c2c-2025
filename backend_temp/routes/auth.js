@@ -31,29 +31,53 @@ const initializeAdmin = async () => {
 
 initializeAdmin();
 
+// Test route
+router.get('/test', (req, res) => {
+  res.json({ 
+    message: 'Auth routes working!',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 // Login route
 router.post('/login', async (req, res) => {
   try {
+    console.log('Login attempt:', req.body);
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
 
     // Find admin
     const admin = await Admin.findOne({ username });
+    console.log('Admin found:', admin ? 'Yes' : 'No');
+    
     if (!admin) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     // Check password
     const isMatch = await bcrypt.compare(password, admin.password);
+    console.log('Password match:', isMatch);
+    
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    // Check JWT secret
+    const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key-for-development';
+    console.log('JWT Secret available:', jwtSecret ? 'Yes' : 'No');
+
     // Create token
     const token = jwt.sign(
       { id: admin._id, username: admin.username },
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: '24h' }
     );
+
+    console.log('Token created successfully');
 
     res.json({
       token,
@@ -65,7 +89,11 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Login error:', error);
+    res.status(500).json({ 
+      message: 'Server error',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 
