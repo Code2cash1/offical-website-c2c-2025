@@ -94,7 +94,7 @@ try {
 }
 
 // Upload folder for static files
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static('/tmp/uploads'));
 
 const PORT = process.env.PORT || 5000;
 

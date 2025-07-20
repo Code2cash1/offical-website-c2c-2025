@@ -39,7 +39,6 @@ const AdminJobApplications: React.FC = () => {
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      console.log('Admin token:', token ? 'exists' : 'missing');
       
       const params = new URLSearchParams({
         page: currentPage.toString(),
@@ -50,8 +49,6 @@ const AdminJobApplications: React.FC = () => {
         params.append('status', statusFilter);
       }
 
-      console.log('Fetching applications from:', `${API_BASE_URL}/api/job-applications?${params}`);
-
       const response = await fetch(`${API_BASE_URL}/api/job-applications?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -59,11 +56,8 @@ const AdminJobApplications: React.FC = () => {
         }
       });
 
-      console.log('Response status:', response.status);
-
       if (response.ok) {
         const data = await response.json();
-        console.log('Applications data:', data);
         setApplications(data.applications);
         setTotalPages(data.totalPages);
       } else {
@@ -177,9 +171,7 @@ const AdminJobApplications: React.FC = () => {
     app.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  console.log('Applications state:', applications);
-  console.log('Filtered applications:', filteredApplications);
-  console.log('Loading state:', loading);
+
 
   const getStatusColor = (status: string) => {
     switch (status) {

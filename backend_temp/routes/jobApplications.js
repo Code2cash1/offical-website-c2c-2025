@@ -8,21 +8,8 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, 'resume-' + Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
-  }
-});
+// Configure multer for file uploads (memory storage for Vercel)
+const storage = multer.memoryStorage();
 
 const upload = multer({ 
   storage: storage,
@@ -52,48 +39,40 @@ const handleMulterError = (err, req, res, next) => {
 // Apply for a job (public)
 router.post('/apply', upload.single('resume'), handleMulterError, async (req, res) => {
   try {
-    console.log('Job application request received');
-    console.log('Request body:', req.body);
-    console.log('File:', req.file);
-
     const { jobId, fullName, email, phone, experience, coverLetter } = req.body;
     
     // Validate required fields
     if (!jobId || !fullName || !email || !phone || !experience || !coverLetter) {
-      console.log('Missing required fields');
       return res.status(400).json({ message: 'All fields are required' });
     }
 
     if (!req.file) {
-      console.log('No file uploaded');
       return res.status(400).json({ message: 'Resume file is required' });
     }
-
-    console.log('Looking for job with ID:', jobId);
     
     // Validate jobId format
     if (!jobId || !jobId.match(/^[0-9a-fA-F]{24}$/)) {
-      console.log('Invalid job ID format:', jobId);
       return res.status(400).json({ message: 'Invalid job ID format' });
     }
     
     // Check if job exists
     const job = await Job.findById(jobId);
     if (!job) {
-      console.log('Job not found with ID:', jobId);
       return res.status(404).json({ message: 'Job not found' });
     }
-
-    console.log('Job found:', job.title);
 
     // Check if user already applied for this job
     const existingApplication = await JobApplication.findOne({ jobId, email });
     if (existingApplication) {
-      console.log('User already applied for this job');
       return res.status(400).json({ message: 'You have already applied for this job' });
     }
 
-    console.log('Creating new application');
+    // Convert file to base64 for storage
+    const resumeData = {
+      filename: req.file.originalname,
+      mimetype: req.file.mimetype,
+      data: req.file.buffer.toString('base64')
+    };
 
     const application = new JobApplication({
       jobId,
@@ -103,12 +82,10 @@ router.post('/apply', upload.single('resume'), handleMulterError, async (req, re
       phone,
       experience,
       coverLetter,
-      resumeUrl: req.file.path
+      resumeUrl: JSON.stringify(resumeData) // Store as JSON string
     });
 
     await application.save();
-    
-    console.log('Application saved successfully');
     
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST');
@@ -250,16 +227,25 @@ router.get('/:id/resume', auth, async (req, res) => {
       return res.status(404).json({ message: 'Application not found' });
     }
 
-    // Use the absolute path directly since resumeUrl is already absolute
-    const filePath = application.resumeUrl;
-    
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      console.error('Resume file not found at:', filePath);
+    if (!application.resumeUrl) {
       return res.status(404).json({ message: 'Resume file not found' });
     }
 
-    res.download(filePath);
+    try {
+      // Parse the stored resume data
+      const resumeData = JSON.parse(application.resumeUrl);
+      const buffer = Buffer.from(resumeData.data, 'base64');
+      
+      // Set headers for file download
+      res.setHeader('Content-Type', resumeData.mimetype);
+      res.setHeader('Content-Disposition', `attachment; filename="${resumeData.filename}"`);
+      res.setHeader('Content-Length', buffer.length);
+      
+      res.send(buffer);
+    } catch (parseError) {
+      console.error('Error parsing resume data:', parseError);
+      return res.status(404).json({ message: 'Resume file corrupted' });
+    }
   } catch (error) {
     console.error('Error downloading resume:', error);
     res.status(500).json({ message: 'Server error' });
@@ -282,6 +268,7 @@ router.get('/:id/resume/view', async (req, res) => {
   } catch (error) {
     return res.status(401).json({ message: 'Invalid token' });
   }
+  
   try {
     const application = await JobApplication.findById(req.params.id);
     
@@ -289,21 +276,25 @@ router.get('/:id/resume/view', async (req, res) => {
       return res.status(404).json({ message: 'Application not found' });
     }
 
-    // Use the absolute path directly since resumeUrl is already absolute
-    const filePath = application.resumeUrl;
-    
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      console.error('Resume file not found at:', filePath);
+    if (!application.resumeUrl) {
       return res.status(404).json({ message: 'Resume file not found' });
     }
 
-    // Set headers for PDF viewing
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename="resume.pdf"');
-    
-    // Send file
-    res.sendFile(path.resolve(filePath));
+    try {
+      // Parse the stored resume data
+      const resumeData = JSON.parse(application.resumeUrl);
+      const buffer = Buffer.from(resumeData.data, 'base64');
+      
+      // Set headers for inline viewing
+      res.setHeader('Content-Type', resumeData.mimetype);
+      res.setHeader('Content-Disposition', `inline; filename="${resumeData.filename}"`);
+      res.setHeader('Content-Length', buffer.length);
+      
+      res.send(buffer);
+    } catch (parseError) {
+      console.error('Error parsing resume data:', parseError);
+      return res.status(404).json({ message: 'Resume file corrupted' });
+    }
   } catch (error) {
     console.error('Error viewing resume:', error);
     res.status(500).json({ message: 'Server error' });
