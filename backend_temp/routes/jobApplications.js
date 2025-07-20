@@ -11,7 +11,7 @@ const router = express.Router();
 // Configure multer for file uploads (memory storage for Vercel)
 const storage = multer.memoryStorage();
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
@@ -40,7 +40,7 @@ const handleMulterError = (err, req, res, next) => {
 router.post('/apply', upload.single('resume'), handleMulterError, async (req, res) => {
   try {
     const { jobId, fullName, email, phone, experience, coverLetter } = req.body;
-    
+
     // Validate required fields
     if (!jobId || !fullName || !email || !phone || !experience || !coverLetter) {
       return res.status(400).json({ message: 'All fields are required' });
@@ -49,12 +49,12 @@ router.post('/apply', upload.single('resume'), handleMulterError, async (req, re
     if (!req.file) {
       return res.status(400).json({ message: 'Resume file is required' });
     }
-    
+
     // Validate jobId format
     if (!jobId || !jobId.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({ message: 'Invalid job ID format' });
     }
-    
+
     // Check if job exists
     const job = await Job.findById(jobId);
     if (!job) {
@@ -86,18 +86,18 @@ router.post('/apply', upload.single('resume'), handleMulterError, async (req, re
     });
 
     await application.save();
-    
+
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.status(201).json({ 
+    res.status(201).json({
       message: 'Application submitted successfully',
       applicationId: application._id
     });
   } catch (error) {
     console.error('Error submitting job application:', error);
     console.error('Error stack:', error.stack);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Server error',
       error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
@@ -141,7 +141,7 @@ router.get('/:id', auth, async (req, res) => {
   try {
     const application = await JobApplication.findById(req.params.id)
       .populate('jobId', 'title type location description');
-    
+
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
     }
@@ -158,7 +158,7 @@ router.patch('/:id/status', auth, async (req, res) => {
   try {
     const { status } = req.body;
     const validStatuses = ['pending', 'reviewed', 'shortlisted', 'rejected', 'hired'];
-    
+
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: 'Invalid status' });
     }
@@ -222,7 +222,7 @@ router.delete('/:id', auth, async (req, res) => {
 router.get('/:id/resume', auth, async (req, res) => {
   try {
     const application = await JobApplication.findById(req.params.id);
-    
+
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
     }
@@ -235,12 +235,12 @@ router.get('/:id/resume', auth, async (req, res) => {
       // Parse the stored resume data
       const resumeData = JSON.parse(application.resumeUrl);
       const buffer = Buffer.from(resumeData.data, 'base64');
-      
+
       // Set headers for file download
       res.setHeader('Content-Type', resumeData.mimetype);
       res.setHeader('Content-Disposition', `attachment; filename="${resumeData.filename}"`);
       res.setHeader('Content-Length', buffer.length);
-      
+
       res.send(buffer);
     } catch (parseError) {
       console.error('Error parsing resume data:', parseError);
@@ -256,7 +256,7 @@ router.get('/:id/resume', auth, async (req, res) => {
 router.get('/:id/resume/view', async (req, res) => {
   // Check token from query parameter or header
   const token = req.query.token || req.headers.authorization?.replace('Bearer ', '');
-  
+
   if (!token) {
     return res.status(401).json({ message: 'Access token required' });
   }
@@ -268,10 +268,10 @@ router.get('/:id/resume/view', async (req, res) => {
   } catch (error) {
     return res.status(401).json({ message: 'Invalid token' });
   }
-  
+
   try {
     const application = await JobApplication.findById(req.params.id);
-    
+
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
     }
@@ -284,12 +284,12 @@ router.get('/:id/resume/view', async (req, res) => {
       // Parse the stored resume data
       const resumeData = JSON.parse(application.resumeUrl);
       const buffer = Buffer.from(resumeData.data, 'base64');
-      
+
       // Set headers for inline viewing
       res.setHeader('Content-Type', resumeData.mimetype);
       res.setHeader('Content-Disposition', `inline; filename="${resumeData.filename}"`);
       res.setHeader('Content-Length', buffer.length);
-      
+
       res.send(buffer);
     } catch (parseError) {
       console.error('Error parsing resume data:', parseError);

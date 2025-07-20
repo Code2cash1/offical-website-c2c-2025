@@ -43,7 +43,7 @@ router.get('/test', (req, res) => {
 // Login route
 router.post('/login', async (req, res) => {
   try {
-    console.log('Login attempt:', req.body);
+
     const { username, password } = req.body;
 
     if (!username || !password) {
