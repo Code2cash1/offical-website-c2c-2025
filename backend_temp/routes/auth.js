@@ -13,7 +13,7 @@ const initializeAdmin = async () => {
   try {
     const adminExists = await Admin.findOne();
     if (!adminExists) {
-      const defaultPassword = process.env.ADMIN_PASSWORD || 'admin123';
+      const defaultPassword = process.env.ADMIN_PASSWORD || 'admin2025';
       const hashedPassword = await bcrypt.hash(defaultPassword, 10);
       const admin = new Admin({
         username: 'admin',
