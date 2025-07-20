@@ -27,7 +27,7 @@ const AdminCareersSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        `${API_BASE_URL}/api/careers/applications`,
+        `${API_BASE_URL}/api/job-applications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -61,18 +61,22 @@ const AdminCareersSimple: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        `${API_BASE_URL}/api/careers/application/${selectedApplication._id}/status`,
+        `${API_BASE_URL}/api/job-applications/${selectedApplication._id}/status`,
         {
           method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: statusUpdate, notes }),
+          body: JSON.stringify({ status: statusUpdate }),
         }
       );
 
       if (response.ok) {
+        // Also update notes if they changed
+        if (notes !== selectedApplication.notes) {
+          await handleUpdateNotes();
+        }
         setIsModalOpen(false);
         fetchApplications(); // Refresh the list
       }
@@ -81,14 +85,109 @@ const AdminCareersSimple: React.FC = () => {
     }
   };
 
-  const handleDownloadResume = (resumeUrl: string, applicantName: string) => {
-    const link = document.createElement("a");
-    link.href = `${API_BASE_URL}/${resumeUrl}`;
-    link.download = `${applicantName}_resume.pdf`;
-    link.target = "_blank";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleUpdateNotes = async () => {
+    if (!selectedApplication) return;
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch(
+        `${API_BASE_URL}/api/job-applications/${selectedApplication._id}/notes`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ notes }),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Error updating notes");
+      }
+    } catch (error) {
+      console.error("Error updating notes:", error);
+    }
+  };
+
+  const handleDownloadResume = async (applicationId: string, applicantName: string) => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        alert('Please login again to download resume.');
+        return;
+      }
+
+      console.log('Downloading resume for application:', applicationId);
+      
+      const response = await fetch(`${API_BASE_URL}/api/job-applications/${applicationId}/resume`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log('Download response status:', response.status);
+
+      if (response.ok) {
+        const blob = await response.blob();
+        console.log('Blob size:', blob.size);
+        
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${applicantName}_resume.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        
+        // Show success message
+        alert('Resume downloaded successfully!');
+      } else {
+        const errorData = await response.json();
+        console.error('Download error:', errorData);
+        alert(`Error downloading resume: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error downloading resume:', error);
+      alert('Error downloading resume. Please try again.');
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedApplication(null);
+    setStatusUpdate('');
+    setNotes('');
+  };
+
+  const handleViewResume = (applicationId: string) => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        alert('Please login again to view resume.');
+        return;
+      }
+      
+      const url = `${API_BASE_URL}/api/job-applications/${applicationId}/resume/view?token=${token}`;
+      console.log('Opening resume URL:', url);
+      
+      const newWindow = window.open(url, '_blank', 'width=800,height=600');
+      
+      if (!newWindow) {
+        alert('Please allow popups to view the resume.');
+      } else {
+        // Check if window loaded successfully after a short delay
+        setTimeout(() => {
+          if (newWindow.closed) {
+            alert('Resume window was closed. Please try again.');
+          }
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('Error viewing resume:', error);
+      alert('Error viewing resume. Please try again.');
+    }
   };
 
   const handleDeleteApplication = async (id: string) => {
@@ -96,7 +195,7 @@ const AdminCareersSimple: React.FC = () => {
       try {
         const token = localStorage.getItem("adminToken");
         const response = await fetch(
-          `${API_BASE_URL}/api/careers/application/${id}`,
+          `${API_BASE_URL}/api/job-applications/${id}`,
           {
             method: "DELETE",
             headers: {
@@ -185,7 +284,7 @@ const AdminCareersSimple: React.FC = () => {
                             </div>
                             <div className="ml-2 sm:ml-4">
                               <div className="text-sm font-medium text-white">
-                                {app.name}
+                                {app.fullName || app.name}
                               </div>
                               <div className="text-xs sm:text-sm text-gray-400 flex items-center">
                                 <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
@@ -202,7 +301,7 @@ const AdminCareersSimple: React.FC = () => {
                         </td>
                         <td className="hidden sm:table-cell px-3 md:px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-white">
-                            {app.position}
+                            {app.jobTitle || app.position}
                           </div>
                           <div className="text-sm text-gray-400">
                             {app.experience}
@@ -240,16 +339,23 @@ const AdminCareersSimple: React.FC = () => {
                               className="text-purple-400 hover:text-purple-300 inline-flex items-center justify-center text-xs sm:text-sm"
                             >
                               <Eye className="h-4 w-4 mr-1" />
-                              <span className="hidden sm:inline">View</span>
+                              <span className="hidden sm:inline">Details</span>
+                            </button>
+                            <button
+                              onClick={() => handleViewResume(app._id)}
+                              className="text-blue-400 hover:text-blue-300 inline-flex items-center justify-center text-xs sm:text-sm"
+                            >
+                              <FileText className="h-4 w-4 mr-1" />
+                              <span className="hidden sm:inline">Resume</span>
                             </button>
                             <button
                               onClick={() =>
-                                handleDownloadResume(app.resumeUrl, app.name)
+                                handleDownloadResume(app._id, app.fullName || app.name)
                               }
                               className="text-green-400 hover:text-green-300 inline-flex items-center justify-center text-xs sm:text-sm"
                             >
                               <Download className="h-4 w-4 mr-1" />
-                              <span className="hidden sm:inline">Resume</span>
+                              <span className="hidden sm:inline">Download</span>
                             </button>
                             <button
                               onClick={() => handleDeleteApplication(app._id)}
@@ -278,7 +384,7 @@ const AdminCareersSimple: React.FC = () => {
                 Application Details
               </h2>
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={handleCloseModal}
                 className="text-gray-400 hover:text-gray-200"
               >
                 <span className="sr-only">Close</span>
@@ -298,7 +404,7 @@ const AdminCareersSimple: React.FC = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {/* Application Info */}
               <div className="space-y-4">
                 <div>
@@ -394,8 +500,8 @@ const AdminCareersSimple: React.FC = () => {
                   <button
                     onClick={() =>
                       handleDownloadResume(
-                        selectedApplication.resumeUrl,
-                        selectedApplication.name
+                        selectedApplication._id,
+                        selectedApplication.fullName || selectedApplication.name
                       )
                     }
                     className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center justify-center transition-colors"
@@ -403,33 +509,6 @@ const AdminCareersSimple: React.FC = () => {
                     <Download className="h-4 w-4 mr-2" />
                     Download Resume
                   </button>
-                </div>
-              </div>
-
-              {/* PDF Viewer */}
-              <div className="space-y-4">
-                <label className="block text-sm font-medium text-white">
-                  Resume Preview
-                </label>
-                <div className="border border-gray-600 rounded-md p-2 bg-gray-800">
-                  <iframe
-                    src={`${API_BASE_URL}/${selectedApplication.resumeUrl}`}
-                    width="100%"
-                    height="800px"
-                    className="border-0 rounded-md"
-                    title="Resume Preview"
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <a
-                    href={`${API_BASE_URL}/${selectedApplication.resumeUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-purple-400 hover:text-purple-300 flex items-center transition-colors"
-                  >
-                    <FileText className="h-4 w-4 mr-2" />
-                    Open in new tab
-                  </a>
                 </div>
               </div>
             </div>

@@ -39,6 +39,8 @@ const AdminJobApplications: React.FC = () => {
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+      console.log('Admin token:', token ? 'exists' : 'missing');
+      
       const params = new URLSearchParams({
         page: currentPage.toString(),
         limit: '10'
@@ -48,6 +50,8 @@ const AdminJobApplications: React.FC = () => {
         params.append('status', statusFilter);
       }
 
+      console.log('Fetching applications from:', `${API_BASE_URL}/api/job-applications?${params}`);
+
       const response = await fetch(`${API_BASE_URL}/api/job-applications?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -55,10 +59,16 @@ const AdminJobApplications: React.FC = () => {
         }
       });
 
+      console.log('Response status:', response.status);
+
       if (response.ok) {
         const data = await response.json();
+        console.log('Applications data:', data);
         setApplications(data.applications);
         setTotalPages(data.totalPages);
+      } else {
+        const errorData = await response.text();
+        console.error('Error response:', errorData);
       }
     } catch (error) {
       console.error('Error fetching applications:', error);
@@ -167,6 +177,10 @@ const AdminJobApplications: React.FC = () => {
     app.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  console.log('Applications state:', applications);
+  console.log('Filtered applications:', filteredApplications);
+  console.log('Loading state:', loading);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800';
@@ -243,7 +257,18 @@ const AdminJobApplications: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredApplications.map((application) => (
+                {filteredApplications.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                      <div className="flex flex-col items-center">
+                        <Briefcase className="h-12 w-12 text-gray-300 mb-4" />
+                        <p className="text-lg font-medium">No applications found</p>
+                        <p className="text-sm">Applications will appear here when candidates apply for jobs.</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredApplications.map((application) => (
                   <tr key={application._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -303,7 +328,8 @@ const AdminJobApplications: React.FC = () => {
                       </div>
                     </td>
                   </tr>
-                ))}
+                  ))
+                )}
               </tbody>
             </table>
           </div>

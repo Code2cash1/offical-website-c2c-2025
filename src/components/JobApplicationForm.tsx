@@ -67,18 +67,24 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({
         formDataToSend.append('resume', resumeFile);
       }
 
+      console.log('Submitting application to:', `${API_BASE_URL}/api/job-applications/apply`);
+      
       const response = await fetch(`${API_BASE_URL}/api/job-applications/apply`, {
         method: 'POST',
         body: formDataToSend
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (response.ok) {
         onSuccess();
         onClose();
       } else {
-        setError(data.message || 'Failed to submit application');
+        setError(data.message || `Failed to submit application (${response.status})`);
       }
     } catch (error) {
       setError('Network error. Please try again.');

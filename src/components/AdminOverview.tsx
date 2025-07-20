@@ -10,6 +10,11 @@ interface DashboardStats {
     hired: number;
     rejected: number;
   };
+  jobs: {
+    total: number;
+    active: number;
+    inactive: number;
+  };
   meetings: {
     total: number;
     pending: number;
@@ -29,9 +34,9 @@ interface DashboardStats {
 interface RecentActivity {
   applications: Array<{
     _id: string;
-    name: string;
+    fullName: string;
     email: string;
-    position: string;
+    jobTitle: string;
     status: string;
     createdAt: string;
   }>;
@@ -128,7 +133,7 @@ const AdminOverview: React.FC = () => {
         </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {/* Career Stats */}
         <div className="bg-gray-900 rounded-lg shadow-lg border border-gray-800 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Career Applications</h3>
@@ -148,6 +153,25 @@ const AdminOverview: React.FC = () => {
             <div className="flex justify-between">
               <span className="text-gray-400">Hired:</span>
               <span className="font-semibold text-green-400">{stats?.careers.hired || 0}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Job Stats */}
+        <div className="bg-gray-900 rounded-lg shadow-lg border border-gray-800 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Job Postings</h3>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-gray-400">Total:</span>
+              <span className="font-semibold text-white">{stats?.jobs.total || 0}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Active:</span>
+              <span className="font-semibold text-green-400">{stats?.jobs.active || 0}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Inactive:</span>
+              <span className="font-semibold text-gray-400">{stats?.jobs.inactive || 0}</span>
             </div>
           </div>
         </div>
@@ -211,8 +235,8 @@ const AdminOverview: React.FC = () => {
               {recentActivity?.applications?.map((app) => (
                 <div key={app._id} className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-white">{app.name}</p>
-                    <p className="text-sm text-gray-400">{app.position}</p>
+                    <p className="font-medium text-white">{app.fullName}</p>
+                    <p className="text-sm text-gray-400">{app.jobTitle}</p>
                     <p className="text-xs text-gray-500">{formatDate(app.createdAt)}</p>
                   </div>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(app.status)}`}>

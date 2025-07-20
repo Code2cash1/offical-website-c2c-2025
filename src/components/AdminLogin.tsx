@@ -8,8 +8,8 @@ interface AdminLoginProps {
 
 const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
   const [formData, setFormData] = useState({
-    username: '',
-    password: 'cash2code1'
+    username: 'admin',
+    password: 'admin123'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,6 +32,9 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
     setError('');
 
     try {
+      console.log('Attempting login with:', formData);
+      console.log('API URL:', `${API_BASE_URL}/api/auth/login`);
+      
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -41,9 +44,11 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
       });
 
       const data = await response.json();
+      console.log('Login response:', data);
 
       if (response.ok) {
         localStorage.setItem('adminToken', data.token);
+        console.log('Token saved to localStorage');
         onLogin(data.token);
         navigate('/admin/dashboard');
       } else {
